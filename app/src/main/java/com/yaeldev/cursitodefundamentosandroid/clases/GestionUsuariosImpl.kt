@@ -1,23 +1,20 @@
 package com.yaeldev.cursitodefundamentosandroid.clases
 
 class GestionUsuariosImpl(
+    // Se inyecta el repositorio: ya no depende directamente del singleton global,
+    // por lo que es sustituible y testeable.
+    private val repositorio: RepositorioContactos
 ) : GestionUsuarios {
 
-    fun obtenerTodosLosNombres(): List<String> {
-        return AgendaGlobal.nombres()
-    }
+    override fun guardar(objeto: Contacto): ResultadoAgenda =
+        repositorio.agregar(objeto)
 
-    override fun guardar(objeto: Contacto) {
-        AgendaGlobal.agregar(contacto = objeto)
-    }
+    override fun obtener(nombre: String): Contacto? =
+        repositorio.obtener(nombre)
 
-    override fun obtener(nombre: String): Contacto {
-        return AgendaGlobal.obtenerContacto(nombre)
-    }
+    override fun eliminar(objeto: Contacto): ResultadoAgenda =
+        repositorio.eliminar(objeto)
 
-    override fun eliminar(objeto: Contacto) {
-        AgendaGlobal.eliminar(objeto)
-    }
-
-
+    override fun obtenerTodosLosNombres(): List<String> =
+        repositorio.nombres()
 }

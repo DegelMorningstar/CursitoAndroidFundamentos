@@ -1,28 +1,33 @@
 package com.yaeldev.cursitodefundamentosandroid.clases
 
-import android.content.res.Resources
-
-object AgendaGlobal {
+object AgendaGlobal : RepositorioContactos {
 
     private val contactos = mutableListOf<Contacto>()
 
-    fun agregar(contacto: Contacto){
+    override fun agregar(contacto: Contacto): ResultadoAgenda {
+        if (contactos.contains(contacto)) {
+            return ResultadoAgenda.Error("Ya existe un contacto con el nombre ${contacto.nombre}")
+        }
         contactos.add(contacto)
+        return ResultadoAgenda.Exito("Contacto ${contacto.nombre} agregado correctamente")
     }
 
-    fun obtenerContacto(nombre:String): Contacto{
-        return contactos.find { nombre == it.nombre } ?: throw Resources.NotFoundException("El contacto con el nombre $nombre, no existe")
+    override fun obtener(nombre: String): Contacto? {
+        return contactos.find { nombre == it.nombre }
     }
 
-    fun eliminar(contacto: Contacto) {
-        contactos.remove(contacto)
+    override fun eliminar(contacto: Contacto): ResultadoAgenda {
+        return if (contactos.remove(contacto)) {
+            ResultadoAgenda.Exito("Contacto ${contacto.nombre} eliminado")
+        } else {
+            ResultadoAgenda.Error("El contacto ${contacto.nombre} no estaba en la agenda")
+        }
     }
 
+    override fun total(): Int = contactos.size
 
-    fun total():Int = contactos.size
+    override fun nombres(): List<String> = contactos.map { it.nombre }
 
-    fun nombres(): List<String> {
-        return contactos.map { it.nombre }
-    }
-
+    // Demuestra el polimorfismo: cada contacto resuelve su propio describir().
+    override fun describirTodos(): List<String> = contactos.map { it.describir() }
 }

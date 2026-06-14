@@ -7,7 +7,7 @@ class ContactoPersonal(
 ): Contacto(nombre = nombre, telefono =telefono) {
 
     override fun describir(): String {
-        return "Contacto personal: $nombre alias el $apodo"
+        return "Contacto personal: $nombre alias el $apodo, telefono: $telefono"
     }
 
 }

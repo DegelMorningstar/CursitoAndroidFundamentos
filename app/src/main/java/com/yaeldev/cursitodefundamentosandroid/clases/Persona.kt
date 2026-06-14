@@ -1,4 +1,4 @@
-package com.yaeldev.cursitodefundamentosandroid
+package com.yaeldev.cursitodefundamentosandroid.clases
 
 data class Persona(
     val nombre:String,

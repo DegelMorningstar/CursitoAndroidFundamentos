@@ -8,7 +8,7 @@ class ContactoTrabajo(
 ) : Contacto(nombre,telefono) {
 
     override fun describir(): String {
-        return "Contacto laboral de: $nombre, de la empresa: $empresa, puesto: $puesto"
+        return "Contacto laboral de: $nombre, de la empresa: $empresa, puesto: $puesto, telefono: $telefono"
     }
 
 }

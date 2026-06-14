@@ -2,7 +2,9 @@ package com.yaeldev.cursitodefundamentosandroid.clases
 
 const val edad:Int = 27
 
-fun main() {
+// Antes era fun main(); se renombro para no generar una tarea de ejecucion de
+// Gradle (que falla en modulos Android). Llamala desde la app si quieres correrla.
+fun demoFundamentosKotlin() {
     val nombre = "Yael"
     val apellidoPaterno = "Montes"
     val apellidoMaterno:String? = null
