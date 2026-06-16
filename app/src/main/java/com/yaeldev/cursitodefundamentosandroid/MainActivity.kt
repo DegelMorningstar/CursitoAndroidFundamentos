@@ -4,10 +4,14 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -29,6 +33,7 @@ class MainActivity : ComponentActivity() {
                         texto = ejecutarDemoAgenda(),
                         modifier = Modifier.padding(innerPadding)
                     )
+                    FilledTonalButtonExample(){}
                 }
             }
         }
@@ -47,10 +52,25 @@ fun SalidaConsola(texto: String, modifier: Modifier = Modifier) {
     )
 }
 
+@Composable
+fun FilledTonalButtonExample(onClick: () -> Unit) {
+    FilledTonalButton(onClick = { onClick() }) {
+        Text("Tonal")
+    }
+}
+
+@Composable
+fun ComponentePersonalizado(){
+
+}
+
 @Preview(showBackground = true)
 @Composable
 fun SalidaConsolaPreview() {
     CursitoDeFundamentosAndroidTheme {
-        SalidaConsola(ejecutarDemoAgenda())
+        Column() {
+            FilledTonalButtonExample(){}
+            SalidaConsola(ejecutarDemoAgenda())
+        }
     }
 }
