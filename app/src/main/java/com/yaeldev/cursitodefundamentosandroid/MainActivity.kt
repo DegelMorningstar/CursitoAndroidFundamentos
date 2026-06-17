@@ -4,9 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -20,14 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yaeldev.cursitodefundamentosandroid.clases.ejecutarDemoAgenda
-import com.yaeldev.cursitodefundamentosandroid.ui.theme.CursitoDeFundamentosAndroidTheme
+import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-            CursitoDeFundamentosAndroidTheme {
+            AppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     SalidaConsola(
                         texto = ejecutarDemoAgenda(),
@@ -67,7 +65,7 @@ fun ComponentePersonalizado(){
 @Preview(showBackground = true)
 @Composable
 fun SalidaConsolaPreview() {
-    CursitoDeFundamentosAndroidTheme {
+    AppTheme {
         Column() {
             FilledTonalButtonExample(){}
             SalidaConsola(ejecutarDemoAgenda())
