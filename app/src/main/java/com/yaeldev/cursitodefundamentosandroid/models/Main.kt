@@ -1,4 +1,4 @@
-package com.yaeldev.cursitodefundamentosandroid.clases
+package com.yaeldev.cursitodefundamentosandroid.models
 
 // Traduce un ResultadoAgenda a texto. El 'when' sobre la sealed class es
 // exhaustivo: el compilador obliga a cubrir todos los casos.

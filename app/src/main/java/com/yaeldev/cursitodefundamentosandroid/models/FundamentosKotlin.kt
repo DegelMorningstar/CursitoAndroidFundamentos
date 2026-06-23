@@ -1,4 +1,4 @@
-package com.yaeldev.cursitodefundamentosandroid.clases
+package com.yaeldev.cursitodefundamentosandroid.models
 
 const val edad:Int = 27
 

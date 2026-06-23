@@ -52,7 +52,7 @@ fun ContactoItem(
                 .padding(vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Avatar(initials = "YM")
+            Avatar(initials = fullName.first().toString())
             ContactInfo(
                 modifier = Modifier
                     .padding(horizontal = 12.dp)

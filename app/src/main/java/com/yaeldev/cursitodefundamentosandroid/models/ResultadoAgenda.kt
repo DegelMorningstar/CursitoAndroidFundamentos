@@ -1,4 +1,4 @@
-package com.yaeldev.cursitodefundamentosandroid.clases
+package com.yaeldev.cursitodefundamentosandroid.models
 
 sealed class ResultadoAgenda {
     data class Exito(val mensaje: String) : ResultadoAgenda()

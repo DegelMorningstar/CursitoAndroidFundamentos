@@ -1,4 +1,4 @@
-package com.yaeldev.cursitodefundamentosandroid.clases
+package com.yaeldev.cursitodefundamentosandroid.models
 
 class ContactoPersonal(
     nombre:String,

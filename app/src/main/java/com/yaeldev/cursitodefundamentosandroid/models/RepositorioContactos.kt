@@ -1,4 +1,4 @@
-package com.yaeldev.cursitodefundamentosandroid.clases
+package com.yaeldev.cursitodefundamentosandroid.models
 
 interface RepositorioContactos {
     fun agregar(contacto: Contacto): ResultadoAgenda

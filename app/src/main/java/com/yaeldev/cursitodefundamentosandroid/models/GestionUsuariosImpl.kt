@@ -1,4 +1,4 @@
-package com.yaeldev.cursitodefundamentosandroid.clases
+package com.yaeldev.cursitodefundamentosandroid.models
 
 class GestionUsuariosImpl(
     // Se inyecta el repositorio: ya no depende directamente del singleton global,

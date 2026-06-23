@@ -1,4 +1,4 @@
-package com.yaeldev.cursitodefundamentosandroid.clases
+package com.yaeldev.cursitodefundamentosandroid.models
 
 interface GestionUsuarios {
     fun guardar(objeto: Contacto): ResultadoAgenda
