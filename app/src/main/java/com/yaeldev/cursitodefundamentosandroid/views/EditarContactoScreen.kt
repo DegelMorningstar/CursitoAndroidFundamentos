@@ -26,10 +26,6 @@ import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 import com.yaeldev.cursitodefundamentosandroid.views.components.DeleteButton
 import com.yaeldev.cursitodefundamentosandroid.views.components.FormularioContactoCard
 
-/**
- * §4.4 Edit Contact Screen — identica a Agregar con header "Editar contacto",
- * campos pre-llenados (placeholders) y boton eliminar. Cascarón visual sin estado.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditarContactoScreen(

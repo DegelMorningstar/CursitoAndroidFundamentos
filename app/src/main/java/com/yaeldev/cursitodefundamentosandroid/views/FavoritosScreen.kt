@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
@@ -24,16 +25,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.yaeldev.cursitodefundamentosandroid.data.Contacto
+import com.yaeldev.cursitodefundamentosandroid.data.ContactosMuestra
 import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 import com.yaeldev.cursitodefundamentosandroid.views.components.ContactoItem
 
-/**
- * §4.5 Favorites Screen — reutiliza el layout de lista, sin barra de busqueda,
- * con la pestaña Favoritos activa. Cascarón visual sin estado.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun FavoritosScreen(modifier: Modifier = Modifier) {
+fun FavoritosScreen(
+    modifier: Modifier = Modifier,
+    onNavigateToContactos: () -> Unit = {},
+    onNavigateToAddContact: () -> Unit = {},
+    onNavigateToDetail: (Contacto) -> Unit = {}
+) {
+    // TODO(viewmodel): la lista de favoritos vendra del ViewModel/repositorio.
+    val favoritos = ContactosMuestra.lista.filter { it.favorite }
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -55,7 +61,7 @@ fun FavoritosScreen(modifier: Modifier = Modifier) {
             NavigationBar(containerColor = MaterialTheme.colorScheme.surface) {
                 NavigationBarItem(
                     selected = false,
-                    onClick = {},
+                    onClick = onNavigateToContactos,
                     colors = navBarItemColors(),
                     icon = {
                         Icon(Icons.Filled.AccountCircle, contentDescription = null)
@@ -75,7 +81,7 @@ fun FavoritosScreen(modifier: Modifier = Modifier) {
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {},
+                onClick = onNavigateToAddContact,
                 shape = CircleShape,
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = Color.White
@@ -91,12 +97,14 @@ fun FavoritosScreen(modifier: Modifier = Modifier) {
                 .padding(16.dp)
         ) {
             LazyColumn(modifier = Modifier.fillMaxSize()) {
-                items(4) {
+                items(favoritos) { contacto ->
                     ContactoItem(
-                        fullName = "Yael Montes Camacho",
-                        cellPhone = "+52 7771234568",
-                        esFavorito = true,
-                        onClick = {}
+                        fullName = contacto.nombreCompleto,
+                        cellPhone = contacto.phone,
+                        esFavorito = contacto.favorite,
+                        onClick = {
+                            onNavigateToDetail(contacto)
+                        }
                     )
                 }
             }

@@ -30,9 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.yaeldev.cursitodefundamentosandroid.models.Contacto
-import com.yaeldev.cursitodefundamentosandroid.models.ContactoPersonal
-import com.yaeldev.cursitodefundamentosandroid.models.ContactoTrabajo
+import com.yaeldev.cursitodefundamentosandroid.data.Contacto
+import com.yaeldev.cursitodefundamentosandroid.data.ContactosMuestra
 import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 import com.yaeldev.cursitodefundamentosandroid.views.components.ContactoItem
 import com.yaeldev.cursitodefundamentosandroid.views.components.SearchBar
@@ -42,28 +41,13 @@ import com.yaeldev.cursitodefundamentosandroid.views.components.SearchBar
 fun ListaContactoScreen(
     modifier: Modifier = Modifier,
     onNavigateToAddContact: () -> Unit,
-    onNavigateToDetail: (Contacto) -> Unit
+    onNavigateToDetail: (Contacto) -> Unit,
+    onNavigateToFavoritos: () -> Unit
 ) {
 
     val query = remember { mutableStateOf("") }
-    var contactos: List<Contacto> by remember { mutableStateOf(listOf(
-        ContactoPersonal(
-            nombre = "Juan Yael Montes Camacho",
-            telefono = "7771897745",
-            apodo = "El patriota"
-        ),
-        ContactoTrabajo(
-            nombre = "Ruben Estrada Zavala",
-            telefono = "5512345678",
-            empresa = "AsTecI",
-            puesto = "El patron"
-        ),
-        ContactoPersonal(
-            nombre = "Tulio Treviño",
-            telefono = "7771897745",
-            apodo = "El patriota"
-        )
-    )) }
+    // TODO(viewmodel): el estado de la lista vendra del ViewModel/repositorio.
+    val contactos: List<Contacto> by remember { mutableStateOf(ContactosMuestra.lista) }
 
     Scaffold(
         modifier = modifier,
@@ -98,7 +82,7 @@ fun ListaContactoScreen(
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = {},
+                    onClick = onNavigateToFavoritos,
                     colors = navBarItemColors(),
                     icon = {
                         Icon(
@@ -142,15 +126,15 @@ fun ListaContactoScreen(
                     .padding(top = 12.dp)
             ) {
                 val contactosFiltrados = if(query.value.isNotEmpty()) {
-                    contactos.filter { it.nombre.contains(query.value, ignoreCase = true) }
+                    contactos.filter { it.nombreCompleto.contains(query.value, ignoreCase = true) }
                 } else {
                     contactos
                 }
                 items(contactosFiltrados) { contacto ->
                     ContactoItem(
-                        fullName = contacto.nombre,
-                        cellPhone = contacto.telefono,
-                        esFavorito = true,
+                        fullName = contacto.nombreCompleto,
+                        cellPhone = contacto.phone,
+                        esFavorito = contacto.favorite,
                         onClick = {
                             onNavigateToDetail.invoke(contacto)
                         }
@@ -161,11 +145,6 @@ fun ListaContactoScreen(
     }
 }
 
-/**
- * §3.5 Bottom Navigation — pill activo primaryContainer, icono/label activo
- * primary, inactivo onSurfaceVariant. Necesario porque el esquema no define
- * secondaryContainer (el indicador por defecto saldria con un color ajeno).
- */
 @Composable
 internal fun navBarItemColors() = NavigationBarItemDefaults.colors(
     selectedIconColor = MaterialTheme.colorScheme.primary,
@@ -182,7 +161,8 @@ private fun ListaContactoPreview() {
         Column {
             ListaContactoScreen(
                 onNavigateToAddContact = {},
-                onNavigateToDetail = {}
+                onNavigateToDetail = {},
+                onNavigateToFavoritos = {}
             )
         }
     }

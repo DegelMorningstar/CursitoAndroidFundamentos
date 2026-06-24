@@ -2,10 +2,12 @@ package com.yaeldev.cursitodefundamentosandroid.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
+import com.yaeldev.cursitodefundamentosandroid.data.ContactosMuestra
 import com.yaeldev.cursitodefundamentosandroid.views.AgregarContactoScreen
 import com.yaeldev.cursitodefundamentosandroid.views.DetalleContactoScreen
 import com.yaeldev.cursitodefundamentosandroid.views.EditarContactoScreen
@@ -29,36 +31,97 @@ fun AppHost(
                     navController.navigate(AgregaContacto)
                 },
                 onNavigateToDetail = { contacto ->
-                    val ruta = DetalleContacto(
-                        nombre = contacto.nombre,
-                        telefono = contacto.telefono
-                    )
-                    navController.navigate(ruta)
+                    navController.navigate(DetalleContacto(id = contacto.id))
+                },
+                onNavigateToFavoritos = {
+                    navController.navigateToTab(Favoritos)
                 }
             )
         }
-        composable<EditaContacto> {
+        composable<EditaContacto> { backStackEntry ->
+            val ruta = backStackEntry.toRoute<EditaContacto>()
+            // TODO(viewmodel): resolver el contacto via repositorio en lugar de ContactosMuestra.
+            val contacto = ContactosMuestra.porId(ruta.id)
             EditarContactoScreen(
+                nombre = contacto?.first ?: "",
+                apellido = contacto?.last ?: "",
+                telefono = contacto?.phone ?: "",
+                correo = contacto?.email ?: "",
+                empresa = contacto?.company ?: "",
                 onClose = {
+                    navController.navigateUp()
+                },
+                onGuardar = {
+                    navController.navigateUp()
+                },
+                onDelete = {
+                    navController.popBackStack(
+                        navController.graph.findStartDestination().id,
+                        inclusive = false
+                    )
                 }
             )
         }
         composable<AgregaContacto> {
-            AgregarContactoScreen()
-        }
-        composable<DetalleContacto> { backStackEntry ->
-            val ruta = backStackEntry.toRoute<DetalleContacto>()
-            DetalleContactoScreen(
-                fullName = ruta.nombre,
-                phone = ruta.telefono,
-                initials = ruta.nombre.first().toString(),
-                onBack = {
+            AgregarContactoScreen(
+                onClose = {
+                    navController.navigateUp()
+                },
+                onGuardar = {
                     navController.navigateUp()
                 }
             )
         }
-        composable<Favoritos> {
-            FavoritosScreen()
+        composable<DetalleContacto> { backStackEntry ->
+            val ruta = backStackEntry.toRoute<DetalleContacto>()
+            // TODO(viewmodel): resolver el contacto via repositorio en lugar de ContactosMuestra.
+            val contacto = ContactosMuestra.porId(ruta.id)
+            DetalleContactoScreen(
+                fullName = contacto?.nombreCompleto ?: "",
+                initials = contacto?.iniciales ?: "?",
+                company = contacto?.company ?: "",
+                phone = contacto?.phone ?: "",
+                email = contacto?.email ?: "",
+                esFavorito = contacto?.favorite ?: false,
+                onBack = {
+                    navController.navigateUp()
+                },
+                onEdit = {
+                    navController.navigate(EditaContacto(id = ruta.id))
+                },
+                onDelete = {
+                    navController.popBackStack(
+                        navController.graph.findStartDestination().id,
+                        inclusive = false
+                    )
+                }
+            )
         }
+        composable<Favoritos> {
+            FavoritosScreen(
+                onNavigateToContactos = {
+                    navController.navigateToTab(ListaContacto)
+                },
+                onNavigateToAddContact = {
+                    navController.navigate(AgregaContacto)
+                },
+                onNavigateToDetail = { contacto ->
+                    navController.navigate(DetalleContacto(id = contacto.id))
+                }
+            )
+        }
+    }
+}
+
+/**
+ * Navegacion entre pestañas del bottom bar (Contactos / Favoritos): vuelve al
+ * inicio del grafo en vez de apilar destinos, y evita duplicados con
+ * launchSingleTop. Asi el back siempre regresa a la lista, no a la pestaña previa.
+ */
+private fun NavHostController.navigateToTab(route: Any) {
+    navigate(route) {
+        popUpTo(graph.findStartDestination().id) { saveState = true }
+        launchSingleTop = true
+        restoreState = true
     }
 }

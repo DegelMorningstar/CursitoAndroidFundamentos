@@ -29,10 +29,6 @@ import androidx.compose.ui.unit.dp
 import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 import com.yaeldev.cursitodefundamentosandroid.views.components.FormularioContactoCard
 
-/**
- * §4.3 Add Contact Screen — cascarón visual sin estado.
- * Header (x / titulo / Guardar) + tarjeta de formulario.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AgregarContactoScreen(

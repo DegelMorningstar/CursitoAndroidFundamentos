@@ -20,10 +20,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 
-/**
- * §3.2 Search Bar — fill primaryContainer, radius 28, search icon + clear.
- * Cascarón visual: la query y el callback se conectan despues.
- */
 @Composable
 fun SearchBar(
     modifier: Modifier = Modifier,

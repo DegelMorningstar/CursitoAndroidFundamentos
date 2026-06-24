@@ -19,10 +19,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 
-/**
- * §3.11 Form Field — label uppercase + input + mensaje de error opcional.
- * Cascarón visual: value, onValueChange y error se conectan despues.
- */
 @Composable
 fun FormField(
     modifier: Modifier = Modifier,

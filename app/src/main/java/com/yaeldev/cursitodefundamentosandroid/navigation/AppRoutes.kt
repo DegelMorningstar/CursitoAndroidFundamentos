@@ -1,25 +1,20 @@
 package com.yaeldev.cursitodefundamentosandroid.navigation
 
-import com.yaeldev.cursitodefundamentosandroid.models.Contacto
 import kotlinx.serialization.Serializable
 
 @Serializable
 object ListaContacto
 
+// Las rutas de detalle y edicion solo llevan el id del contacto: el dato
+// completo se resolvera desde el repositorio (hoy datos de muestra, manana API).
 @Serializable
-object EditaContacto //TODO: FALTAN PARAMETROS
+data class EditaContacto(val id: Int)
 
 @Serializable
 object AgregaContacto
 
 @Serializable
-data class DetalleContacto(
-    val nombre:String,
-    val telefono:String,
-    val apodo:String = "",
-    val empresa:String = "",
-    val puesto:String = ""
-)
+data class DetalleContacto(val id: Int)
 
 @Serializable
 object Favoritos

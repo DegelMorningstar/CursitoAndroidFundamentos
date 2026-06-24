@@ -33,9 +33,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 
-/**
- * §3.6 Action Button — circulo 52px primaryContainer, icono + label.
- */
 @Composable
 fun ActionButton(
     modifier: Modifier = Modifier,

@@ -31,11 +31,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 
-/**
- * §3.9 Confirmation Dialog — backdrop oscuro, card 24px, icono trash,
- * titulo + cuerpo + acciones Cancelar / Eliminar.
- * Cascarón visual: la visibilidad y los callbacks se manejan despues.
- */
 @Composable
 fun ConfirmDialog(
     title: String = "Eliminar contacto",

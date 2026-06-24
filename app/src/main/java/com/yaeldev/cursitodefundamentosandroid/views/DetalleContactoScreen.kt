@@ -46,10 +46,6 @@ import com.yaeldev.cursitodefundamentosandroid.views.components.ActionButton
 import com.yaeldev.cursitodefundamentosandroid.views.components.DeleteButton
 import com.yaeldev.cursitodefundamentosandroid.views.components.InfoCardRow
 
-/**
- * §4.2 Contact Detail Screen — cascarón visual sin estado.
- * Datos por parametro (placeholders), callbacks vacios.
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DetalleContactoScreen(

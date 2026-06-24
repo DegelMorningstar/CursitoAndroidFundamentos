@@ -13,11 +13,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 
-/**
- * Tarjeta de formulario reutilizada por Agregar (§4.3) y Editar (§4.4).
- * Cascarón visual: todos los campos reciben valores por parametro (placeholders)
- * y callbacks vacios; sin estado interno.
- */
 @Composable
 fun FormularioContactoCard(
     modifier: Modifier = Modifier,

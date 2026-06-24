@@ -27,11 +27,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 
-/**
- * §3.12 Empty States — circulo de icono tintado + titulo + cuerpo, centrado.
- * Las 3 variantes (sin contactos / sin resultados / sin favoritos) se
- * exponen como helpers, sin estado.
- */
 @Composable
 fun EmptyState(
     modifier: Modifier = Modifier,

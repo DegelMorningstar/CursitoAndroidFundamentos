@@ -13,10 +13,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 
-/**
- * §3.10 Snackbar — fondo onSurface, texto blanco, radius 12.
- * Cascarón visual: la visibilidad y el auto-dismiss se manejan despues.
- */
 @Composable
 fun AppSnackbar(
     modifier: Modifier = Modifier,
