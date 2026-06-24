@@ -8,7 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.yaeldev.cursitodefundamentosandroid.navigation.AppHost
 import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
-import com.yaeldev.cursitodefundamentosandroid.views.ListaContactoScreen
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {

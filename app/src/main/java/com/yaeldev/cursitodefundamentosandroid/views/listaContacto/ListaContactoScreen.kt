@@ -1,5 +1,6 @@
-package com.yaeldev.cursitodefundamentosandroid.views
+package com.yaeldev.cursitodefundamentosandroid.views.listaContacto
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -10,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Star
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
@@ -22,33 +24,27 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.yaeldev.cursitodefundamentosandroid.data.Contacto
-import com.yaeldev.cursitodefundamentosandroid.data.ContactosMuestra
 import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 import com.yaeldev.cursitodefundamentosandroid.views.components.ContactoItem
+import com.yaeldev.cursitodefundamentosandroid.views.components.EmptyContactos
 import com.yaeldev.cursitodefundamentosandroid.views.components.SearchBar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListaContactoScreen(
     modifier: Modifier = Modifier,
-    onNavigateToAddContact: () -> Unit,
-    onNavigateToDetail: (Contacto) -> Unit,
-    onNavigateToFavoritos: () -> Unit
+    uiState: ListaContactoUiState,
+    actions: ListaContactoActions
 ) {
-
-    val query = remember { mutableStateOf("") }
-    // TODO(viewmodel): el estado de la lista vendra del ViewModel/repositorio.
-    val contactos: List<Contacto> by remember { mutableStateOf(ContactosMuestra.lista) }
-
     Scaffold(
         modifier = modifier,
         topBar = {
@@ -82,7 +78,7 @@ fun ListaContactoScreen(
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = onNavigateToFavoritos,
+                    onClick = actions.onNavigateToFavoritos,
                     colors = navBarItemColors(),
                     icon = {
                         Icon(
@@ -96,7 +92,7 @@ fun ListaContactoScreen(
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = onNavigateToAddContact,
+                onClick = actions.onNavigateToAddContact,
                 shape = CircleShape,
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = Color.White
@@ -112,33 +108,36 @@ fun ListaContactoScreen(
                 .padding(16.dp)
         ) {
             SearchBar(
-                query = query.value,
-                onQueryChange = { nuevoValor ->
-                    query.value = nuevoValor
-                },
-                onClear = {
-                    query.value = ""
-                }
+                query = uiState.query,
+                onQueryChange = actions.onQueryChange,
+                onClear = actions.onClear
             )
-            LazyColumn(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 12.dp)
-            ) {
-                val contactosFiltrados = if(query.value.isNotEmpty()) {
-                    contactos.filter { it.nombreCompleto.contains(query.value, ignoreCase = true) }
-                } else {
-                    contactos
+            when {
+                uiState.isLoading -> {
+                    Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                        CircularProgressIndicator()
+                    }
                 }
-                items(contactosFiltrados) { contacto ->
-                    ContactoItem(
-                        fullName = contacto.nombreCompleto,
-                        cellPhone = contacto.phone,
-                        esFavorito = contacto.favorite,
-                        onClick = {
-                            onNavigateToDetail.invoke(contacto)
+                uiState.mostrarLista -> {
+                    LazyColumn(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(top = 12.dp)
+                    ) {
+                        items(uiState.contactosFiltrados) { contacto ->
+                            ContactoItem(
+                                fullName = contacto.nombreCompleto,
+                                cellPhone = contacto.phone,
+                                esFavorito = contacto.favorite,
+                                onClick = {
+                                    actions.onNavigateToDetail.invoke(contacto)
+                                }
+                            )
                         }
-                    )
+                    }
+                }
+                !uiState.mostrarLista -> {
+                    EmptyContactos()
                 }
             }
         }
@@ -156,13 +155,14 @@ internal fun navBarItemColors() = NavigationBarItemDefaults.colors(
 
 @Preview
 @Composable
-private fun ListaContactoPreview() {
+private fun ListaContactoPreview(
+    @PreviewParameter(ListaContactoPreviewParameterProvider::class) state: ListaContactoUiState
+) {
     AppTheme {
         Column {
             ListaContactoScreen(
-                onNavigateToAddContact = {},
-                onNavigateToDetail = {},
-                onNavigateToFavoritos = {}
+                uiState = state,
+                actions = ListaContactoActions()
             )
         }
     }

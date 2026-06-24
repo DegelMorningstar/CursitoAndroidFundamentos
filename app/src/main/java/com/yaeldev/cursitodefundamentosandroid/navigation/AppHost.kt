@@ -12,13 +12,14 @@ import com.yaeldev.cursitodefundamentosandroid.views.AgregarContactoScreen
 import com.yaeldev.cursitodefundamentosandroid.views.DetalleContactoScreen
 import com.yaeldev.cursitodefundamentosandroid.views.EditarContactoScreen
 import com.yaeldev.cursitodefundamentosandroid.views.FavoritosScreen
-import com.yaeldev.cursitodefundamentosandroid.views.ListaContactoScreen
+import com.yaeldev.cursitodefundamentosandroid.views.listaContacto.ListaContactoRoot
+import com.yaeldev.cursitodefundamentosandroid.views.listaContacto.ListaContactoScreen
 
 @Composable
 fun AppHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
-    startDestination:Any = ListaContacto
+    startDestination:Any = ListaContacto,
 ) {
     NavHost(
         modifier = modifier,
@@ -26,7 +27,7 @@ fun AppHost(
         startDestination = startDestination
     ) {
         composable<ListaContacto> {
-            ListaContactoScreen(
+            ListaContactoRoot(
                 onNavigateToAddContact = {
                     navController.navigate(AgregaContacto)
                 },

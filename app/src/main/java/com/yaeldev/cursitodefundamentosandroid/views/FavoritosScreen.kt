@@ -29,6 +29,7 @@ import com.yaeldev.cursitodefundamentosandroid.data.Contacto
 import com.yaeldev.cursitodefundamentosandroid.data.ContactosMuestra
 import com.yaeldev.cursitodefundamentosandroid.ui.theme.AppTheme
 import com.yaeldev.cursitodefundamentosandroid.views.components.ContactoItem
+import com.yaeldev.cursitodefundamentosandroid.views.listaContacto.navBarItemColors
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
