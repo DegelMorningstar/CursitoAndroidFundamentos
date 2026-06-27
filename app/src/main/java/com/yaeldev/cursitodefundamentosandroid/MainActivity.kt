@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.yaeldev.cursitodefundamentosandroid.navigation.AppHost
@@ -17,7 +18,7 @@ class MainActivity : ComponentActivity() {
             val navController = rememberNavController()
             AppTheme {
                 AppHost(
-                    modifier = Modifier,
+                    modifier = Modifier.statusBarsPadding(),
                     navController = navController
                 )
             }

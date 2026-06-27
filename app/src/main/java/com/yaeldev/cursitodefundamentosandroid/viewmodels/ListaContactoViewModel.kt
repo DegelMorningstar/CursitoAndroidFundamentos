@@ -3,7 +3,9 @@ package com.yaeldev.cursitodefundamentosandroid.viewmodels
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.yaeldev.cursitodefundamentosandroid.data.ContactoRepository
 import com.yaeldev.cursitodefundamentosandroid.data.ContactosMuestra
 import com.yaeldev.cursitodefundamentosandroid.views.listaContacto.ListaContactoUiState
 import kotlinx.coroutines.delay
@@ -14,7 +16,21 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.time.Duration.Companion.milliseconds
 
-class ListaContactoViewModel : ViewModel() {
+class ListaContactoViewModelFactory(
+    private val repository: ContactoRepository
+) : ViewModelProvider.Factory {
+
+    @Suppress("UNCHECKED_CAST")
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        if(modelClass.isAssignableFrom(ListaContactoViewModel::class.java)) {
+            return ListaContactoViewModel(repository) as T
+        }
+        throw IllegalArgumentException("No conozco este viewmodel")
+    }
+
+}
+
+class ListaContactoViewModel(val repository: ContactoRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(ListaContactoUiState())
     val uiState: StateFlow<ListaContactoUiState> = _uiState.asStateFlow()
@@ -30,7 +46,7 @@ class ListaContactoViewModel : ViewModel() {
             showLoading(true)
             delay(3000.milliseconds)
             showLoading(false)
-            val contactos = ContactosMuestra.lista
+            val contactos = repository.obtenerTodos()
             _uiState.update { state ->
                 state.copy(contactos = contactos)
             }
