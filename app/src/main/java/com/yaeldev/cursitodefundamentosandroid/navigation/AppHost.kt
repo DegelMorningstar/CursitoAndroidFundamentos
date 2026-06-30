@@ -7,13 +7,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.toRoute
-import com.yaeldev.cursitodefundamentosandroid.data.ContactosMuestra
-import com.yaeldev.cursitodefundamentosandroid.views.AgregarContactoScreen
-import com.yaeldev.cursitodefundamentosandroid.views.DetalleContactoScreen
-import com.yaeldev.cursitodefundamentosandroid.views.EditarContactoScreen
-import com.yaeldev.cursitodefundamentosandroid.views.FavoritosScreen
-import com.yaeldev.cursitodefundamentosandroid.views.listaContacto.ListaContactoRoot
-import com.yaeldev.cursitodefundamentosandroid.views.listaContacto.ListaContactoScreen
+import com.yaeldev.cursitodefundamentosandroid.presentation.agregarContacto.AgregarContactoRoot
+import com.yaeldev.cursitodefundamentosandroid.presentation.detalleContacto.DetalleContactoRoot
+import com.yaeldev.cursitodefundamentosandroid.presentation.editarContacto.EditarContactoRoot
+import com.yaeldev.cursitodefundamentosandroid.presentation.favoritos.FavoritosRoot
+import com.yaeldev.cursitodefundamentosandroid.presentation.listaContacto.ListaContactoRoot
 
 @Composable
 fun AppHost(
@@ -41,21 +39,15 @@ fun AppHost(
         }
         composable<EditaContacto> { backStackEntry ->
             val ruta = backStackEntry.toRoute<EditaContacto>()
-            // TODO(viewmodel): resolver el contacto via repositorio en lugar de ContactosMuestra.
-            val contacto = ContactosMuestra.porId(ruta.id)
-            EditarContactoScreen(
-                nombre = contacto?.first ?: "",
-                apellido = contacto?.last ?: "",
-                telefono = contacto?.phone ?: "",
-                correo = contacto?.email ?: "",
-                empresa = contacto?.company ?: "",
+            EditarContactoRoot(
+                id = ruta.id,
                 onClose = {
                     navController.navigateUp()
                 },
-                onGuardar = {
+                onGuardado = {
                     navController.navigateUp()
                 },
-                onDelete = {
+                onEliminado = {
                     navController.popBackStack(
                         navController.graph.findStartDestination().id,
                         inclusive = false
@@ -64,33 +56,26 @@ fun AppHost(
             )
         }
         composable<AgregaContacto> {
-            AgregarContactoScreen(
+            AgregarContactoRoot(
                 onClose = {
                     navController.navigateUp()
                 },
-                onGuardar = {
+                onGuardado = {
                     navController.navigateUp()
                 }
             )
         }
         composable<DetalleContacto> { backStackEntry ->
             val ruta = backStackEntry.toRoute<DetalleContacto>()
-            // TODO(viewmodel): resolver el contacto via repositorio en lugar de ContactosMuestra.
-            val contacto = ContactosMuestra.porId(ruta.id)
-            DetalleContactoScreen(
-                fullName = contacto?.nombreCompleto ?: "",
-                initials = contacto?.iniciales ?: "?",
-                company = contacto?.company ?: "",
-                phone = contacto?.phone ?: "",
-                email = contacto?.email ?: "",
-                esFavorito = contacto?.favorite ?: false,
+            DetalleContactoRoot(
+                id = ruta.id,
                 onBack = {
                     navController.navigateUp()
                 },
                 onEdit = {
                     navController.navigate(EditaContacto(id = ruta.id))
                 },
-                onDelete = {
+                onEliminado = {
                     navController.popBackStack(
                         navController.graph.findStartDestination().id,
                         inclusive = false
@@ -99,7 +84,7 @@ fun AppHost(
             )
         }
         composable<Favoritos> {
-            FavoritosScreen(
+            FavoritosRoot(
                 onNavigateToContactos = {
                     navController.navigateToTab(ListaContacto)
                 },

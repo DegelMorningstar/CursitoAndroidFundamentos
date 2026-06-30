@@ -303,44 +303,6 @@ object AppContainer {
 
 ---
 
-## 8. Camino a REST (sin tocar UI ni ViewModels)
-
-1. Agregar Retrofit + el converter de `kotlinx.serialization` (ya está el plugin
-   y `kotlinx-serialization-json` en `build.gradle.kts`).
-2. Crear `ContactoApiService` (Retrofit) con los endpoints `@GET/@POST/@PUT/@DELETE`.
-3. Crear `data/ContactoRepositoryApi.kt : ContactoRepository` que llama al service
-   y mapea DTO ↔ `Contacto` (o usa `Contacto` directo, pues ya es `@Serializable`).
-4. En `AppContainer`, cambiar **una línea**:
-   `ContactoRepositoryFake()` → `ContactoRepositoryApi(...)`.
-
-Como `Contacto` ya es `@Serializable` y la interfaz ya es `suspend`, los
-ViewModels y la UI **no cambian**.
-
----
-
-## 9. Plan de implementación incremental
-
-- [ ] **1. UiState**: crear `ListaUiState`, `DetalleUiState`, `FormularioUiState`.
-- [ ] **2. DI**: crear `di/AppContainer.kt` con el repositorio único y la factory.
-- [ ] **3. ListaContactoViewModel**: implementar (carga + búsqueda + favorito) y
-      conectar `ListaContactoScreen` vía `ListaContactoRoute`. Quitar
-      `ContactosMuestra` de esa pantalla.
-- [ ] **4. FavoritosViewModel**: ídem, filtrando favoritos.
-- [ ] **5. DetalleContactoViewModel**: cargar por `id`; quitar la resolución por
-      `ContactosMuestra` en `AppHost`.
-- [ ] **6. FormularioContactoViewModel**: hoisting del formulario (ya hay
-      `value/onXChange/error` en `FormularioContactoCard`), validación y
-      crear/actualizar/eliminar. Conectar Agregar y Editar.
-- [ ] **7. Eventos one-shot**: snackbars ("Contacto agregado ✓", "Cambios
-      guardados ✓") y navegación tras guardar/eliminar.
-- [ ] **8. Limpieza**: eliminar lecturas directas de `ContactosMuestra` en
-      `views/` y `navigation/`. `ContactosMuestra` queda solo como semilla del
-      `Fake`.
-- [ ] **9. (Opcional)** Tests del repositorio fake y de los ViewModels.
-- [ ] **10. (Futuro)** `ContactoRepositoryApi` + Retrofit.
-
----
-
 ## 10. Convenciones
 
 - **Estado inmutable**: `data class` + `MutableStateFlow` + `.update { it.copy(...) }`.
