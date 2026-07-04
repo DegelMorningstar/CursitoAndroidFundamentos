@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     kotlin("plugin.serialization") version "2.0.21"
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -60,11 +61,12 @@ dependencies {
     val nav_version = "2.9.8"
     // Jetpack Compose integration
     implementation("androidx.navigation:navigation-compose:${nav_version}")
-    // JSON serialization library, works with the Kotlin serialization plugin
+    // JSON serialization: la usan las rutas type-safe de Navigation Compose
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
-    // Retrofit para consumo de APIs
-    implementation("com.squareup.retrofit2:retrofit:3.0.0")
-    implementation("com.google.code.gson:gson:2.14.0")
-    implementation("com.squareup.retrofit2:converter-gson:3.0.0")
-    implementation(libs.okhttp.logging)
+    //Firebase
+    implementation(platform("com.google.firebase:firebase-bom:34.15.0"))
+    // Cloud Firestore (fuente de verdad del CRUD de contactos)
+    implementation("com.google.firebase:firebase-firestore")
+    // await() sobre las Task de Play Services desde corrutinas
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0")
 }

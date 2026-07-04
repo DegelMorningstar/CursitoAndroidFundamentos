@@ -1,10 +1,7 @@
 package com.yaeldev.cursitodefundamentosandroid.domain.models
 
-import kotlinx.serialization.Serializable
-
-@Serializable
 data class Contacto(
-    val id: Int = 0,            // 0 = aun no asignado; el data source pone el id real
+    val id: String = "",        // ID del documento en Firestore ("" = aun no asignado)
     val first: String,          // requerido
     val last: String = "",      // opcional
     val phone: String,          // requerido

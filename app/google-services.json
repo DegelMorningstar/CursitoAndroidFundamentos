@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "375112401970",
+    "project_id": "contactosapp-ec515",
+    "storage_bucket": "contactosapp-ec515.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:375112401970:android:e2829f5f7d1cfee543682b",
+        "android_client_info": {
+          "package_name": "com.yaeldev.cursitodefundamentosandroid"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdBRJwomZVJzIoh8QcqauhPAwRPB5Eb28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

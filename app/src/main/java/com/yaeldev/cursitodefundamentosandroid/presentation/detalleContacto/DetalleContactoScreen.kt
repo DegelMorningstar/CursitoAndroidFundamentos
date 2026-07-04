@@ -45,6 +45,7 @@ import com.yaeldev.cursitodefundamentosandroid.presentation.theme.AppTheme
 import com.yaeldev.cursitodefundamentosandroid.presentation.components.ActionButton
 import com.yaeldev.cursitodefundamentosandroid.presentation.components.DeleteButton
 import com.yaeldev.cursitodefundamentosandroid.presentation.components.InfoCardRow
+import com.yaeldev.cursitodefundamentosandroid.presentation.components.MensajeError
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -98,6 +99,8 @@ fun DetalleContactoScreen(
             Spacer(modifier = Modifier.height(16.dp))
             InfoCard(phone = uiState.phone, email = uiState.email, company = uiState.company)
             Spacer(modifier = Modifier.height(24.dp))
+            MensajeError(mensaje = uiState.error)
+            if (uiState.error != null) Spacer(modifier = Modifier.height(24.dp))
             DeleteButton(onClick = actions.onDelete)
             Spacer(modifier = Modifier.height(24.dp))
         }

@@ -4,7 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yaeldev.cursitodefundamentosandroid.domain.models.Contacto
-import com.yaeldev.cursitodefundamentosandroid.domain.repositories.ContactoRepository
+import com.yaeldev.cursitodefundamentosandroid.domain.usecases.ActualizarContactoUseCase
+import com.yaeldev.cursitodefundamentosandroid.domain.usecases.EliminarContactoUseCase
+import com.yaeldev.cursitodefundamentosandroid.domain.usecases.ObtenerContactoPorIdUseCase
+import com.yaeldev.cursitodefundamentosandroid.util.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,20 +15,30 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class EditarContactoViewModelFactory(
-    private val repository: ContactoRepository
+    private val obtenerContactoPorId: ObtenerContactoPorIdUseCase,
+    private val actualizarContacto: ActualizarContactoUseCase,
+    private val eliminarContacto: EliminarContactoUseCase
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(EditarContactoViewModel::class.java)) {
-            return EditarContactoViewModel(repository) as T
+            return EditarContactoViewModel(
+                obtenerContactoPorId,
+                actualizarContacto,
+                eliminarContacto
+            ) as T
         }
         throw IllegalArgumentException("No conozco este viewmodel")
     }
 
 }
 
-class EditarContactoViewModel(val repository: ContactoRepository) : ViewModel() {
+class EditarContactoViewModel(
+    private val obtenerContactoPorId: ObtenerContactoPorIdUseCase,
+    private val actualizarContacto: ActualizarContactoUseCase,
+    private val eliminarContacto: EliminarContactoUseCase
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(EditarContactoUiState())
     val uiState: StateFlow<EditarContactoUiState> = _uiState.asStateFlow()
@@ -34,18 +47,24 @@ class EditarContactoViewModel(val repository: ContactoRepository) : ViewModel() 
     // edita (id, favorito) al actualizar.
     private var contactoActual: Contacto? = null
 
-    fun cargarContacto(id: Int) {
+    fun cargarContacto(id: String) {
         viewModelScope.launch {
-            val contacto = repository.obtenerPorId(id) ?: return@launch
-            contactoActual = contacto
-            _uiState.update { state ->
-                state.copy(
-                    nombre = contacto.first,
-                    apellido = contacto.last,
-                    telefono = contacto.phone,
-                    correo = contacto.email,
-                    empresa = contacto.company
-                )
+            when (val resultado = obtenerContactoPorId(id)) {
+                is Result.Success -> {
+                    val contacto = resultado.data ?: return@launch
+                    contactoActual = contacto
+                    _uiState.update { state ->
+                        state.copy(
+                            nombre = contacto.first,
+                            apellido = contacto.last,
+                            telefono = contacto.phone,
+                            correo = contacto.email,
+                            empresa = contacto.company,
+                            error = null
+                        )
+                    }
+                }
+                is Result.Error -> _uiState.update { it.copy(error = resultado.message) }
             }
         }
     }
@@ -82,7 +101,8 @@ class EditarContactoViewModel(val repository: ContactoRepository) : ViewModel() 
             return
         }
         viewModelScope.launch {
-            repository.actualizar(
+            _uiState.update { state -> state.copy(error = null) }
+            val resultado = actualizarContacto(
                 original.copy(
                     first = estado.nombre,
                     last = estado.apellido,
@@ -91,15 +111,20 @@ class EditarContactoViewModel(val repository: ContactoRepository) : ViewModel() 
                     company = estado.empresa
                 )
             )
-            onGuardado()
+            when (resultado) {
+                is Result.Success -> onGuardado()
+                is Result.Error -> _uiState.update { state -> state.copy(error = resultado.message) }
+            }
         }
     }
 
     fun eliminar(onEliminado: () -> Unit) {
         val id = contactoActual?.id ?: return
         viewModelScope.launch {
-            repository.eliminar(id)
-            onEliminado()
+            when (val resultado = eliminarContacto(id)) {
+                is Result.Success -> onEliminado()
+                is Result.Error -> _uiState.update { it.copy(error = resultado.message) }
+            }
         }
     }
 

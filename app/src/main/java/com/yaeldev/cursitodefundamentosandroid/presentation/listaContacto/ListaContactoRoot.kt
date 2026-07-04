@@ -7,9 +7,9 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.yaeldev.cursitodefundamentosandroid.domain.models.Contacto
-import com.yaeldev.cursitodefundamentosandroid.data.local.ContactoRepositoryFake
-import com.yaeldev.cursitodefundamentosandroid.data.remote.AppService
-import com.yaeldev.cursitodefundamentosandroid.data.remote.ContactoRepositoryImpl
+import com.yaeldev.cursitodefundamentosandroid.data.remote.firestore.ContactoRepositoryFirestore
+import com.yaeldev.cursitodefundamentosandroid.domain.usecases.AlternarFavoritoUseCase
+import com.yaeldev.cursitodefundamentosandroid.domain.usecases.ObtenerContactosUseCase
 
 @Composable
 fun ListaContactoRoot(
@@ -17,9 +17,13 @@ fun ListaContactoRoot(
     onNavigateToDetail: (Contacto) -> Unit,
     onNavigateToFavoritos: () -> Unit
 ) {
-    val randomUserAPI = remember { AppService.randomUserApi }
-    val repository = remember { ContactoRepositoryImpl(randomUserAPI) }
-    val factory = remember { ListaContactoViewModelFactory(repository) }
+    val repository = remember { ContactoRepositoryFirestore() }
+    val factory = remember {
+        ListaContactoViewModelFactory(
+            ObtenerContactosUseCase(repository),
+            AlternarFavoritoUseCase(repository)
+        )
+    }
     val viewModel: ListaContactoViewModel = viewModel(
         factory = factory
     )

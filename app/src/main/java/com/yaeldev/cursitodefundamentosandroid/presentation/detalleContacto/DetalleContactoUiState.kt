@@ -11,7 +11,8 @@ data class DetalleContactoUiState(
     val phone: String = "",
     val email: String = "",
     val esFavorito: Boolean = false,
-    val avatarColor: Color = pink
+    val avatarColor: Color = pink,
+    val error: String? = null            // error de la operacion (cargar/eliminar/favorito)
 )
 
 data class DetalleContactoActions(

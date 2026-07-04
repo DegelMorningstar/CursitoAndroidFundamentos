@@ -6,18 +6,27 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.yaeldev.cursitodefundamentosandroid.data.local.ContactoRepositoryFake
+import com.yaeldev.cursitodefundamentosandroid.data.remote.firestore.ContactoRepositoryFirestore
+import com.yaeldev.cursitodefundamentosandroid.domain.usecases.AlternarFavoritoUseCase
+import com.yaeldev.cursitodefundamentosandroid.domain.usecases.EliminarContactoUseCase
+import com.yaeldev.cursitodefundamentosandroid.domain.usecases.ObtenerContactoPorIdUseCase
 
 @Composable
 fun DetalleContactoRoot(
-    id: Int,
+    id: String,
     onBack: () -> Unit,
     onEdit: () -> Unit,
     onEliminado: () -> Unit,
     onShare: () -> Unit = {}
 ) {
-    val repository = remember { ContactoRepositoryFake() }
-    val factory = remember { DetalleContactoViewModelFactory(repository) }
+    val repository = remember { ContactoRepositoryFirestore() }
+    val factory = remember {
+        DetalleContactoViewModelFactory(
+            ObtenerContactoPorIdUseCase(repository),
+            AlternarFavoritoUseCase(repository),
+            EliminarContactoUseCase(repository)
+        )
+    }
     val viewModel: DetalleContactoViewModel = viewModel(
         factory = factory
     )

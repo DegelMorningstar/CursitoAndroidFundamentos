@@ -4,7 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yaeldev.cursitodefundamentosandroid.domain.models.Contacto
-import com.yaeldev.cursitodefundamentosandroid.domain.repositories.ContactoRepository
+import com.yaeldev.cursitodefundamentosandroid.domain.usecases.AgregarContactoUseCase
+import com.yaeldev.cursitodefundamentosandroid.util.Result
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,20 +13,22 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class AgregarContactoViewModelFactory(
-    private val repository: ContactoRepository
+    private val agregarContacto: AgregarContactoUseCase
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(AgregarContactoViewModel::class.java)) {
-            return AgregarContactoViewModel(repository) as T
+            return AgregarContactoViewModel(agregarContacto) as T
         }
         throw IllegalArgumentException("No conozco este viewmodel")
     }
 
 }
 
-class AgregarContactoViewModel(val repository: ContactoRepository) : ViewModel() {
+class AgregarContactoViewModel(
+    private val agregarContacto: AgregarContactoUseCase
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow(AgregarContactoUiState())
     val uiState: StateFlow<AgregarContactoUiState> = _uiState.asStateFlow()
@@ -61,7 +64,8 @@ class AgregarContactoViewModel(val repository: ContactoRepository) : ViewModel()
             return
         }
         viewModelScope.launch {
-            repository.agregar(
+            _uiState.update { state -> state.copy(error = null) }
+            val resultado = agregarContacto(
                 Contacto(
                     first = estado.nombre,
                     last = estado.apellido,
@@ -70,7 +74,10 @@ class AgregarContactoViewModel(val repository: ContactoRepository) : ViewModel()
                     company = estado.empresa
                 )
             )
-            onGuardado()
+            when (resultado) {
+                is Result.Success -> onGuardado()
+                is Result.Error -> _uiState.update { state -> state.copy(error = resultado.message) }
+            }
         }
     }
 

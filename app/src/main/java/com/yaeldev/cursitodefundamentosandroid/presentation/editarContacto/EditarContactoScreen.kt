@@ -27,6 +27,7 @@ import com.yaeldev.cursitodefundamentosandroid.presentation.theme.AppTheme
 import com.yaeldev.cursitodefundamentosandroid.presentation.components.DeleteButton
 import com.yaeldev.cursitodefundamentosandroid.presentation.components.FormularioContactoCard
 import com.yaeldev.cursitodefundamentosandroid.presentation.components.GuardarButton
+import com.yaeldev.cursitodefundamentosandroid.presentation.components.MensajeError
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -65,6 +66,8 @@ fun EditarContactoScreen(
                 .verticalScroll(rememberScrollState())
                 .padding(16.dp)
         ) {
+            MensajeError(mensaje = uiState.error)
+            if (uiState.error != null) Spacer(modifier = Modifier.height(16.dp))
             FormularioContactoCard(
                 nombre = uiState.nombre,
                 apellido = uiState.apellido,

@@ -9,7 +9,8 @@ data class EditarContactoUiState(
     val correo: String = "",
     val empresa: String = "",
     val errorNombre: String? = null,
-    val errorTelefono: String? = null
+    val errorTelefono: String? = null,
+    val error: String? = null            // error de la operacion (guardar/eliminar/cargar)
 )
 
 data class EditarContactoActions(

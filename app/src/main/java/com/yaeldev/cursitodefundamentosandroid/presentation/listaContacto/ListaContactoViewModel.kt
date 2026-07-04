@@ -3,32 +3,34 @@ package com.yaeldev.cursitodefundamentosandroid.presentation.listaContacto
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.yaeldev.cursitodefundamentosandroid.domain.repositories.ContactoRepository
+import com.yaeldev.cursitodefundamentosandroid.domain.usecases.AlternarFavoritoUseCase
+import com.yaeldev.cursitodefundamentosandroid.domain.usecases.ObtenerContactosUseCase
 import com.yaeldev.cursitodefundamentosandroid.util.Result
-import com.yaeldev.cursitodefundamentosandroid.util.toMessage
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlin.time.Duration.Companion.milliseconds
 
 class ListaContactoViewModelFactory(
-    private val repository: ContactoRepository
+    private val obtenerContactos: ObtenerContactosUseCase,
+    private val alternarFavorito: AlternarFavoritoUseCase
 ) : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if(modelClass.isAssignableFrom(ListaContactoViewModel::class.java)) {
-            return ListaContactoViewModel(repository) as T
+            return ListaContactoViewModel(obtenerContactos, alternarFavorito) as T
         }
         throw IllegalArgumentException("No conozco este viewmodel")
     }
 
 }
 
-class ListaContactoViewModel(val repository: ContactoRepository) : ViewModel() {
+class ListaContactoViewModel(
+    private val obtenerContactos: ObtenerContactosUseCase,
+    private val alternarFavoritoUseCase: AlternarFavoritoUseCase
+) : ViewModel() {
 
     private val _uiState = MutableStateFlow<ListaContactoUiState>(ListaContactoUiState.Empty)
     val uiState: StateFlow<ListaContactoUiState> = _uiState.asStateFlow()
@@ -36,7 +38,7 @@ class ListaContactoViewModel(val repository: ContactoRepository) : ViewModel() {
     fun getContactList(){
         viewModelScope.launch {
             _uiState.value = ListaContactoUiState.Loading
-            when(val response = repository.obtenerTodos()) {
+            when(val response = obtenerContactos()) {
                 is Result.Error -> {
                     _uiState.value = ListaContactoUiState.Error(message = response.message)
                 }
@@ -49,8 +51,22 @@ class ListaContactoViewModel(val repository: ContactoRepository) : ViewModel() {
         }
     }
 
-    fun alternarFavorito(id: Int) {
-
+    fun alternarFavorito(id: String) {
+        viewModelScope.launch {
+            when (val resultado = alternarFavoritoUseCase(id)) {
+                is Result.Success -> _uiState.update { current ->
+                    if (current is ListaContactoUiState.Success) {
+                        current.copy(
+                            contactos = current.contactos.map {
+                                if (it.id == resultado.data.id) resultado.data else it
+                            }
+                        )
+                    } else current
+                }
+                // En error conservamos la lista tal cual; el favorito no cambio.
+                is Result.Error -> Unit
+            }
+        }
     }
 
     fun onQueryChange(query: String) {
