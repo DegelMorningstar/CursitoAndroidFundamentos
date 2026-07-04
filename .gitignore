@@ -13,3 +13,10 @@
 .externalNativeBuild
 .cxx
 local.properties
+/.claude/
+/CLAUDE.md
+/app/google-services.json
+firebase.json
+firestore.indexes.json
+firestore.rules
+/.firebaserc
