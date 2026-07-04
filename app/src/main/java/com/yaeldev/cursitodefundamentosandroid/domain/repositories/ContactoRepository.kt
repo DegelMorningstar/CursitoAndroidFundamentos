@@ -1,11 +1,12 @@
 package com.yaeldev.cursitodefundamentosandroid.domain.repositories
 
 import com.yaeldev.cursitodefundamentosandroid.domain.models.Contacto
+import com.yaeldev.cursitodefundamentosandroid.util.Result
 
 interface ContactoRepository {
 
     /** GET /contacts — todos, ordenados alfabeticamente por nombre completo. */
-    suspend fun obtenerTodos(): List<Contacto>
+    suspend fun obtenerTodos(): Result<List<Contacto>>
 
     /** GET /contacts/{id} — null si no existe. */
     suspend fun obtenerPorId(id: Int): Contacto?

@@ -104,40 +104,49 @@ fun ListaContactoScreen(
                 .fillMaxSize()
                 .padding(16.dp)
         ) {
-            SearchBar(
-                query = uiState.query,
-                onQueryChange = actions.onQueryChange,
-                onClear = actions.onClear
-            )
-            when {
-                uiState.isLoading -> {
+            when(uiState){
+                ListaContactoUiState.Empty -> Unit
+                is ListaContactoUiState.Error -> {
+                    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                        Text(uiState.message)
+                    }
+                }
+                ListaContactoUiState.Loading -> {
                     Box(Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
                         CircularProgressIndicator()
                     }
                 }
-                uiState.mostrarLista -> {
+                is ListaContactoUiState.Success -> {
+                    SearchBar(
+                        query = uiState.query,
+                        onQueryChange = actions.onQueryChange,
+                        onClear = actions.onClear
+                    )
                     LazyColumn(
                         modifier = Modifier
                             .fillMaxSize()
                             .padding(top = 12.dp)
                     ) {
-                        items(uiState.contactosFiltrados) { contacto ->
-                            ContactoItem(
-                                fullName = contacto.nombreCompleto,
-                                cellPhone = contacto.phone,
-                                esFavorito = contacto.favorite,
-                                onClick = {
-                                    actions.onNavigateToDetail.invoke(contacto)
-                                },
-                                onToggleFavorito = {
-                                    actions.onToggleFavorito(contacto)
-                                }
-                            )
+                        if(uiState.mostrarLista) {
+                            items(uiState.contactosFiltrados) { contacto ->
+                                ContactoItem(
+                                    fullName = contacto.nombreCompleto,
+                                    cellPhone = contacto.phone,
+                                    esFavorito = contacto.favorite,
+                                    onClick = {
+                                        actions.onNavigateToDetail.invoke(contacto)
+                                    },
+                                    onToggleFavorito = {
+                                        actions.onToggleFavorito(contacto)
+                                    }
+                                )
+                            }
+                        }else{
+                            item {
+                                EmptyContactos()
+                            }
                         }
                     }
-                }
-                !uiState.mostrarLista -> {
-                    EmptyContactos()
                 }
             }
         }

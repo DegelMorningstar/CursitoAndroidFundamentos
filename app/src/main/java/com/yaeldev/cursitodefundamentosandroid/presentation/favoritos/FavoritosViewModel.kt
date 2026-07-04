@@ -31,16 +31,13 @@ class FavoritosViewModel(val repository: ContactoRepository) : ViewModel() {
 
     fun getFavoritos() {
         viewModelScope.launch {
-            val favoritos = repository.obtenerTodos().filter { it.favorite }
-            _uiState.update { state -> state.copy(favoritos = favoritos) }
+
         }
     }
 
     fun alternarFavorito(id: Int) {
         viewModelScope.launch {
-            repository.alternarFavorito(id)
-            val favoritos = repository.obtenerTodos().filter { it.favorite }
-            _uiState.update { state -> state.copy(favoritos = favoritos) }
+
         }
     }
 

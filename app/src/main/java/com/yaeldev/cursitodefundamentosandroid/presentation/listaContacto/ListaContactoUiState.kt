@@ -4,18 +4,23 @@ import androidx.compose.ui.tooling.preview.PreviewParameterProvider
 import com.yaeldev.cursitodefundamentosandroid.domain.models.Contacto
 import com.yaeldev.cursitodefundamentosandroid.data.local.ContactosMuestra
 
-data class ListaContactoUiState(
-    val query: String = "",
-    val contactos: List<Contacto> = emptyList(),
-    val isLoading: Boolean = false,
-    val errorMessage: String? = null
-){
-    val contactosFiltrados = if(query.isNotEmpty()) {
-        contactos.filter { it.nombreCompleto.contains(query, ignoreCase = true) }
-    } else {
-        contactos
+sealed interface ListaContactoUiState {
+    data object Empty : ListaContactoUiState
+    data object Loading : ListaContactoUiState
+    data class Error(val message:String) : ListaContactoUiState
+    data class Success(
+        val query: String = "",
+        val contactos: List<Contacto> = emptyList()
+    ): ListaContactoUiState {
+        val contactosFiltrados : List<Contacto>
+            get() = if(query.isBlank()) contactos
+                    else contactos.filter {
+                        it.nombreCompleto.contains(query, ignoreCase = true)
+                    }
+        val mostrarLista: Boolean
+            get() = contactosFiltrados.isNotEmpty()
     }
-    val mostrarLista: Boolean = contactos.isNotEmpty()
+
 }
 
 data class ListaContactoActions(
@@ -31,18 +36,18 @@ data class ListaContactoActions(
 class ListaContactoPreviewParameterProvider: PreviewParameterProvider<ListaContactoUiState> {
     override val values: Sequence<ListaContactoUiState>
         get() = sequenceOf(
-            ListaContactoUiState(
+            ListaContactoUiState.Empty,
+            ListaContactoUiState.Loading,
+            ListaContactoUiState.Error("No se encontraron contactos."),
+            ListaContactoUiState.Success(
                 query = "Yael M",
                 contactos = ContactosMuestra.lista
             ),
-            ListaContactoUiState(
+            ListaContactoUiState.Success(
                 contactos = ContactosMuestra.lista
             ),
-            ListaContactoUiState(
+            ListaContactoUiState.Success(
                 contactos = emptyList()
-            ),
-            ListaContactoUiState(
-                isLoading = true
             )
         )
 }

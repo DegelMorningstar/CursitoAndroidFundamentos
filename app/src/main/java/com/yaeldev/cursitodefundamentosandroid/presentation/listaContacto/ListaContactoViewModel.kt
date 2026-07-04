@@ -4,6 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yaeldev.cursitodefundamentosandroid.domain.repositories.ContactoRepository
+import com.yaeldev.cursitodefundamentosandroid.util.Result
+import com.yaeldev.cursitodefundamentosandroid.util.toMessage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,46 +30,40 @@ class ListaContactoViewModelFactory(
 
 class ListaContactoViewModel(val repository: ContactoRepository) : ViewModel() {
 
-    private val _uiState = MutableStateFlow(ListaContactoUiState())
+    private val _uiState = MutableStateFlow<ListaContactoUiState>(ListaContactoUiState.Empty)
     val uiState: StateFlow<ListaContactoUiState> = _uiState.asStateFlow()
-
-    fun showLoading(show: Boolean){
-        _uiState.update { state ->
-            state.copy(isLoading = show)
-        }
-    }
 
     fun getContactList(){
         viewModelScope.launch {
-            showLoading(true)
-            //delay(3000.milliseconds)
-            showLoading(false)
-            val contactos = repository.obtenerTodos()
-            _uiState.update { state ->
-                state.copy(contactos = contactos)
+            _uiState.value = ListaContactoUiState.Loading
+            when(val response = repository.obtenerTodos()) {
+                is Result.Error -> {
+                    _uiState.value = ListaContactoUiState.Error(message = response.message)
+                }
+                is Result.Success -> {
+                    _uiState.value = ListaContactoUiState.Success(
+                        contactos = response.data
+                    )
+                }
             }
         }
     }
 
     fun alternarFavorito(id: Int) {
-        viewModelScope.launch {
-            repository.alternarFavorito(id)
-            val contactos = repository.obtenerTodos()
-            _uiState.update { state ->
-                state.copy(contactos = contactos)
-            }
-        }
+
     }
 
-    fun onQueryChange(it:String) {
-        _uiState.update { state ->
-            state.copy(query = it)
+    fun onQueryChange(query: String) {
+        _uiState.update { current ->
+            if (current is ListaContactoUiState.Success) current.copy(query = query)
+            else current
         }
     }
 
     fun onClear(){
-        _uiState.update { state ->
-            state.copy(query = "")
+        _uiState.update { current ->
+            if (current is ListaContactoUiState.Success) current.copy(query = "")
+            else current
         }
     }
 

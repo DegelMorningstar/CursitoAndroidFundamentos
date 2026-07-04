@@ -2,14 +2,15 @@ package com.yaeldev.cursitodefundamentosandroid.data.local
 
 import com.yaeldev.cursitodefundamentosandroid.domain.models.Contacto
 import com.yaeldev.cursitodefundamentosandroid.domain.repositories.ContactoRepository
+import com.yaeldev.cursitodefundamentosandroid.util.Result
 
 class ContactoRepositoryFake : ContactoRepository {
 
     private val contactos = ContactosMuestra.lista.toMutableList()
     private var siguienteId = 13
 
-    override suspend fun obtenerTodos(): List<Contacto> =
-        contactos.sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.nombreCompleto })
+    override suspend fun obtenerTodos(): Result<List<Contacto>> =
+        Result.Success(data = contactos.sortedWith(compareBy(String.CASE_INSENSITIVE_ORDER) { it.nombreCompleto }))
 
     override suspend fun obtenerPorId(id: Int): Contacto? =
         contactos.find { it.id == id }

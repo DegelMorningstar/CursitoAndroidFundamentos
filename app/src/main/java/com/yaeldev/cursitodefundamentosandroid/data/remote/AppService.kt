@@ -10,7 +10,7 @@ object AppService {
 
     fun getRetrofit(): Retrofit {
         return Retrofit.Builder()
-            .baseUrl("https://randomuser.me/api/")
+            .baseUrl(Paths.BASE_URL_RANDOM_API)
             .addConverterFactory(GsonConverterFactory.create())
             .client(okHttp)
             .build()
