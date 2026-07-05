@@ -35,6 +35,9 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        // firebase-auth (BOM 34.x) trae metadata de Kotlin 2.3 y el proyecto usa 2.0.21;
+        // solo consumimos su API Java, asi que ignoramos el chequeo de version de metadata.
+        freeCompilerArgs += "-Xskip-metadata-version-check"
     }
     buildFeatures {
         compose = true
@@ -67,6 +70,8 @@ dependencies {
     implementation(platform("com.google.firebase:firebase-bom:34.15.0"))
     // Cloud Firestore (fuente de verdad del CRUD de contactos)
     implementation("com.google.firebase:firebase-firestore")
+    // Firebase Authentication (login/registro con correo y contraseña)
+    implementation("com.google.firebase:firebase-auth")
     // await() sobre las Task de Play Services desde corrutinas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0")
 }
