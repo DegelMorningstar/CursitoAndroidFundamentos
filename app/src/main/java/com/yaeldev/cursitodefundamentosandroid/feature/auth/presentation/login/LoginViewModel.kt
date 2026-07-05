@@ -1,7 +1,6 @@
 package com.yaeldev.cursitodefundamentosandroid.feature.auth.presentation.login
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yaeldev.cursitodefundamentosandroid.feature.auth.domain.usecases.IniciarSesionUseCase
 import com.yaeldev.cursitodefundamentosandroid.core.network.Result
@@ -10,19 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-class LoginViewModelFactory(
-    private val iniciarSesion: IniciarSesionUseCase
-) : ViewModelProvider.Factory {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(LoginViewModel::class.java)) {
-            return LoginViewModel(iniciarSesion) as T
-        }
-        throw IllegalArgumentException("No conozco este viewmodel")
-    }
-}
 
 class LoginViewModel(
     private val iniciarSesion: IniciarSesionUseCase

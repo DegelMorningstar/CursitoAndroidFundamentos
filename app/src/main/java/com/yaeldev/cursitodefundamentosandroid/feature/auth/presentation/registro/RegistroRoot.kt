@@ -5,17 +5,14 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.yaeldev.cursitodefundamentosandroid.feature.auth.data.remote.firebase.AuthRepositoryFirebase
-import com.yaeldev.cursitodefundamentosandroid.feature.auth.domain.usecases.RegistrarUseCase
+import com.yaeldev.cursitodefundamentosandroid.core.di.appContainer
 
 @Composable
 fun RegistroRoot(
     onRegistrado: () -> Unit,
     onIrALogin: () -> Unit
 ) {
-    val repository = remember { AuthRepositoryFirebase() }
-    val factory = remember { RegistroViewModelFactory(RegistrarUseCase(repository)) }
-    val viewModel: RegistroViewModel = viewModel(factory = factory)
+    val viewModel: RegistroViewModel = viewModel(factory = appContainer().auth.factory)
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val actions = remember(viewModel) {
         RegistroActions(

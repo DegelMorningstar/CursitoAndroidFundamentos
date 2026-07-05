@@ -1,7 +1,6 @@
 package com.yaeldev.cursitodefundamentosandroid.feature.perfil.presentation.perfil
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yaeldev.cursitodefundamentosandroid.feature.perfil.domain.models.EstadoUsuario
 import com.yaeldev.cursitodefundamentosandroid.feature.perfil.domain.usecases.ActualizarPerfilUseCase
@@ -15,26 +14,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class PerfilViewModelFactory(
-    private val obtenerUsuarioActual: ObtenerUsuarioActualUseCase,
-    private val obtenerPerfil: ObtenerPerfilUseCase,
-    private val actualizarPerfil: ActualizarPerfilUseCase,
-    private val cerrarSesionUseCase: CerrarSesionUseCase
-) : ViewModelProvider.Factory {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(PerfilViewModel::class.java)) {
-            return PerfilViewModel(
-                obtenerUsuarioActual,
-                obtenerPerfil,
-                actualizarPerfil,
-                cerrarSesionUseCase
-            ) as T
-        }
-        throw IllegalArgumentException("No conozco este viewmodel")
-    }
-}
 
 class PerfilViewModel(
     obtenerUsuarioActual: ObtenerUsuarioActualUseCase,

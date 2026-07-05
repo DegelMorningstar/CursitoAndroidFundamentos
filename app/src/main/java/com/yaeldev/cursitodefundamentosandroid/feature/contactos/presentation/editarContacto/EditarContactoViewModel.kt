@@ -1,7 +1,6 @@
 package com.yaeldev.cursitodefundamentosandroid.feature.contactos.presentation.editarContacto
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.models.Contacto
 import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.usecases.ActualizarContactoUseCase
@@ -14,25 +13,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class EditarContactoViewModelFactory(
-    private val obtenerContactoPorId: ObtenerContactoPorIdUseCase,
-    private val actualizarContacto: ActualizarContactoUseCase,
-    private val eliminarContacto: EliminarContactoUseCase
-) : ViewModelProvider.Factory {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(EditarContactoViewModel::class.java)) {
-            return EditarContactoViewModel(
-                obtenerContactoPorId,
-                actualizarContacto,
-                eliminarContacto
-            ) as T
-        }
-        throw IllegalArgumentException("No conozco este viewmodel")
-    }
-
-}
 
 class EditarContactoViewModel(
     private val obtenerContactoPorId: ObtenerContactoPorIdUseCase,

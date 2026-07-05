@@ -1,7 +1,6 @@
 package com.yaeldev.cursitodefundamentosandroid.feature.contactos.presentation.agregarContacto
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.models.Contacto
 import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.usecases.AgregarContactoUseCase
@@ -11,20 +10,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-class AgregarContactoViewModelFactory(
-    private val agregarContacto: AgregarContactoUseCase
-) : ViewModelProvider.Factory {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(AgregarContactoViewModel::class.java)) {
-            return AgregarContactoViewModel(agregarContacto) as T
-        }
-        throw IllegalArgumentException("No conozco este viewmodel")
-    }
-
-}
 
 class AgregarContactoViewModel(
     private val agregarContacto: AgregarContactoUseCase

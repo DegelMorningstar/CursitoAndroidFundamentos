@@ -1,7 +1,6 @@
 package com.yaeldev.cursitodefundamentosandroid.feature.contactos.presentation.favoritos
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.usecases.AlternarFavoritoUseCase
 import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.usecases.ObtenerFavoritosUseCase
@@ -11,21 +10,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-class FavoritosViewModelFactory(
-    private val obtenerFavoritos: ObtenerFavoritosUseCase,
-    private val alternarFavorito: AlternarFavoritoUseCase
-) : ViewModelProvider.Factory {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(FavoritosViewModel::class.java)) {
-            return FavoritosViewModel(obtenerFavoritos, alternarFavorito) as T
-        }
-        throw IllegalArgumentException("No conozco este viewmodel")
-    }
-
-}
 
 class FavoritosViewModel(
     private val obtenerFavoritos: ObtenerFavoritosUseCase,

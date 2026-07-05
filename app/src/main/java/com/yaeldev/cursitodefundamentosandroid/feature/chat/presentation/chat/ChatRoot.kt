@@ -5,10 +5,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.firestore.ChatRepositoryFirestore
-import com.yaeldev.cursitodefundamentosandroid.feature.chat.domain.usecases.EnviarMensajeUseCase
-import com.yaeldev.cursitodefundamentosandroid.feature.chat.domain.usecases.MarcarLeidosUseCase
-import com.yaeldev.cursitodefundamentosandroid.feature.chat.domain.usecases.ObservarMensajesUseCase
+import com.yaeldev.cursitodefundamentosandroid.core.di.appContainer
 
 @Composable
 fun ChatRoot(
@@ -17,19 +14,9 @@ fun ChatRoot(
     onBack: () -> Unit,
     onVerPerfil: () -> Unit
 ) {
-    val repository = remember { ChatRepositoryFirestore() }
-    val miUid = remember { repository.uidActual().orEmpty() }
-    val factory = remember {
-        ChatViewModelFactory(
-            chatId = chatId,
-            titulo = titulo,
-            miUid = miUid,
-            observarMensajes = ObservarMensajesUseCase(repository),
-            enviarMensaje = EnviarMensajeUseCase(repository),
-            marcarLeidos = MarcarLeidosUseCase(repository)
-        )
-    }
-    val viewModel: ChatViewModel = viewModel(factory = factory)
+    val viewModel: ChatViewModel = viewModel(
+        factory = appContainer().chat.chatFactory(chatId, titulo)
+    )
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val actions = remember(viewModel) {
         ChatActions(

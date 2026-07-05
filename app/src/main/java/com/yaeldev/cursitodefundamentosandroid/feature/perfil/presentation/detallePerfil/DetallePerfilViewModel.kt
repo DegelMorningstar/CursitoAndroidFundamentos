@@ -1,7 +1,6 @@
 package com.yaeldev.cursitodefundamentosandroid.feature.perfil.presentation.detallePerfil
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yaeldev.cursitodefundamentosandroid.feature.perfil.domain.usecases.ObtenerUsuarioPorIdUseCase
 import com.yaeldev.cursitodefundamentosandroid.core.network.Result
@@ -10,19 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-class DetallePerfilViewModelFactory(
-    private val obtenerUsuarioPorId: ObtenerUsuarioPorIdUseCase
-) : ViewModelProvider.Factory {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(DetallePerfilViewModel::class.java)) {
-            return DetallePerfilViewModel(obtenerUsuarioPorId) as T
-        }
-        throw IllegalArgumentException("No conozco este viewmodel")
-    }
-}
 
 class DetallePerfilViewModel(
     private val obtenerUsuarioPorId: ObtenerUsuarioPorIdUseCase

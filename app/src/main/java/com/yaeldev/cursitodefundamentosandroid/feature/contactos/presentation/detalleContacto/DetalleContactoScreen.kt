@@ -47,6 +47,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
 import com.yaeldev.cursitodefundamentosandroid.core.ui.theme.AppTheme
+import com.yaeldev.cursitodefundamentosandroid.core.ui.theme.colorAvatar
 import com.yaeldev.cursitodefundamentosandroid.core.ui.components.ActionButton
 import com.yaeldev.cursitodefundamentosandroid.core.ui.components.ConfirmDialog
 import com.yaeldev.cursitodefundamentosandroid.core.ui.components.DeleteButton
@@ -137,7 +138,7 @@ fun DetalleContactoScreen(
                             initials = uiState.initials,
                             company = uiState.company,
                             esFavorito = uiState.esFavorito,
-                            avatarColor = uiState.avatarColor,
+                            avatarColor = colorAvatar(uiState.fullName),
                             onCall = { actions.onCall(uiState.phone) },
                             onEmail = { actions.onEmail(uiState.email) },
                             onMensaje = actions.onMensaje,

@@ -1,7 +1,6 @@
 package com.yaeldev.cursitodefundamentosandroid.feature.chat.presentation.chat
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yaeldev.cursitodefundamentosandroid.feature.chat.domain.usecases.EnviarMensajeUseCase
 import com.yaeldev.cursitodefundamentosandroid.feature.chat.domain.usecases.MarcarLeidosUseCase
@@ -12,24 +11,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-class ChatViewModelFactory(
-    private val chatId: String,
-    private val titulo: String,
-    private val miUid: String,
-    private val observarMensajes: ObservarMensajesUseCase,
-    private val enviarMensaje: EnviarMensajeUseCase,
-    private val marcarLeidos: MarcarLeidosUseCase
-) : ViewModelProvider.Factory {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(ChatViewModel::class.java)) {
-            return ChatViewModel(chatId, titulo, miUid, observarMensajes, enviarMensaje, marcarLeidos) as T
-        }
-        throw IllegalArgumentException("No conozco este viewmodel")
-    }
-}
 
 class ChatViewModel(
     private val chatId: String,

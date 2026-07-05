@@ -6,10 +6,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.yaeldev.cursitodefundamentosandroid.feature.contactos.data.remote.firestore.ContactoRepositoryFirestore
-import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.usecases.ActualizarContactoUseCase
-import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.usecases.EliminarContactoUseCase
-import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.usecases.ObtenerContactoPorIdUseCase
+import com.yaeldev.cursitodefundamentosandroid.core.di.appContainer
 
 @Composable
 fun EditarContactoRoot(
@@ -18,16 +15,8 @@ fun EditarContactoRoot(
     onGuardado: () -> Unit,
     onEliminado: () -> Unit
 ) {
-    val repository = remember { ContactoRepositoryFirestore() }
-    val factory = remember {
-        EditarContactoViewModelFactory(
-            ObtenerContactoPorIdUseCase(repository),
-            ActualizarContactoUseCase(repository),
-            EliminarContactoUseCase(repository)
-        )
-    }
     val viewModel: EditarContactoViewModel = viewModel(
-        factory = factory
+        factory = appContainer().contactos.factory
     )
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val actions = remember(viewModel) {

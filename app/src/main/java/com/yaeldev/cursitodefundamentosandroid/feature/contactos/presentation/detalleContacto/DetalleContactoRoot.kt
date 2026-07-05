@@ -11,14 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.yaeldev.cursitodefundamentosandroid.feature.contactos.data.remote.firestore.ContactoRepositoryFirestore
-import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.usecases.AlternarFavoritoUseCase
-import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.usecases.EliminarContactoUseCase
-import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.usecases.ObtenerContactoPorIdUseCase
-import com.yaeldev.cursitodefundamentosandroid.feature.perfil.domain.usecases.BuscarUsuarioPorEmailUseCase
-import com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.firestore.ChatRepositoryFirestore
-import com.yaeldev.cursitodefundamentosandroid.feature.chat.domain.usecases.AbrirOCrearChatUseCase
-import com.yaeldev.cursitodefundamentosandroid.feature.perfil.data.remote.firebase.PerfilRepositoryFirebase
+import com.yaeldev.cursitodefundamentosandroid.core.di.appContainer
 
 @Composable
 fun DetalleContactoRoot(
@@ -29,20 +22,8 @@ fun DetalleContactoRoot(
     onNavigateToChat: (chatId: String, titulo: String, otroUid: String) -> Unit
 ) {
     val context = LocalContext.current
-    val repository = remember { ContactoRepositoryFirestore() }
-    val perfilRepository = remember { PerfilRepositoryFirebase() }
-    val chatRepository = remember { ChatRepositoryFirestore() }
-    val factory = remember {
-        DetalleContactoViewModelFactory(
-            ObtenerContactoPorIdUseCase(repository),
-            AlternarFavoritoUseCase(repository),
-            EliminarContactoUseCase(repository),
-            BuscarUsuarioPorEmailUseCase(perfilRepository),
-            AbrirOCrearChatUseCase(chatRepository)
-        )
-    }
     val viewModel: DetalleContactoViewModel = viewModel(
-        factory = factory
+        factory = appContainer().contactos.factory
     )
     val uiState by viewModel.uiState.collectAsStateWithLifecycle()
     val actions = remember(viewModel) {

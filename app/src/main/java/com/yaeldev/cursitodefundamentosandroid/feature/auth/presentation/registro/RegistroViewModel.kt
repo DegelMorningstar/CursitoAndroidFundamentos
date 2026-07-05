@@ -1,7 +1,6 @@
 package com.yaeldev.cursitodefundamentosandroid.feature.auth.presentation.registro
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.yaeldev.cursitodefundamentosandroid.feature.auth.domain.usecases.RegistrarUseCase
 import com.yaeldev.cursitodefundamentosandroid.core.network.Result
@@ -10,19 +9,6 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-
-class RegistroViewModelFactory(
-    private val registrar: RegistrarUseCase
-) : ViewModelProvider.Factory {
-
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(RegistroViewModel::class.java)) {
-            return RegistroViewModel(registrar) as T
-        }
-        throw IllegalArgumentException("No conozco este viewmodel")
-    }
-}
 
 class RegistroViewModel(
     private val registrar: RegistrarUseCase

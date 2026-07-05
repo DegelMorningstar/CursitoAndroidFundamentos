@@ -16,12 +16,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
-import com.yaeldev.cursitodefundamentosandroid.feature.auth.data.remote.firebase.AuthRepositoryFirebase
-import com.yaeldev.cursitodefundamentosandroid.feature.perfil.domain.usecases.ActualizarPerfilUseCase
-import com.yaeldev.cursitodefundamentosandroid.feature.auth.domain.usecases.CerrarSesionUseCase
-import com.yaeldev.cursitodefundamentosandroid.feature.perfil.data.remote.firebase.PerfilRepositoryFirebase
-import com.yaeldev.cursitodefundamentosandroid.feature.perfil.domain.usecases.ObtenerPerfilUseCase
-import com.yaeldev.cursitodefundamentosandroid.feature.perfil.domain.usecases.ObtenerUsuarioActualUseCase
+import com.yaeldev.cursitodefundamentosandroid.core.di.appContainer
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -39,17 +34,7 @@ fun PerfilRoot(
 ) {
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val perfilRepository = remember { PerfilRepositoryFirebase() }
-    val authRepository = remember { AuthRepositoryFirebase() }
-    val factory = remember {
-        PerfilViewModelFactory(
-            ObtenerUsuarioActualUseCase(perfilRepository),
-            ObtenerPerfilUseCase(perfilRepository),
-            ActualizarPerfilUseCase(perfilRepository),
-            CerrarSesionUseCase(authRepository)
-        )
-    }
-    val viewModel: PerfilViewModel = viewModel(factory = factory)
+    val viewModel: PerfilViewModel = viewModel(factory = appContainer().perfil.factory)
     val estadoVm by viewModel.uiState.collectAsStateWithLifecycle()
     // El tema es estado de app (no del ViewModel): lo inyectamos al estado que ve la pantalla.
     val uiState = estadoVm.copy(temaOscuro = temaOscuro)
