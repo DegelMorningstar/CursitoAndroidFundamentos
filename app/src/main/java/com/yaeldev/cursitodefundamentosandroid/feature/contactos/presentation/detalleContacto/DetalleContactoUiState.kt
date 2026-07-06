@@ -16,7 +16,9 @@ sealed interface DetalleContactoUiState {
         val email: String = "",
         val esFavorito: Boolean = false,
         val avatarColor: Color = pink,
-        val error: String? = null            // error de operacion (eliminar/favorito), se muestra sobre el contacto
+        val error: String? = null,           // error de operacion (eliminar/favorito), se muestra sobre el contacto
+        // El contacto no es usuario de la app: se ofrece chatear por SMS/WhatsApp/Telegram.
+        val mostrarOpcionesExternas: Boolean = false
     ) : DetalleContactoUiState
 }
 
@@ -28,7 +30,11 @@ data class DetalleContactoActions(
     val onCall: (String) -> Unit = {},
     val onEmail: (String) -> Unit = {},
     val onToggleFavorite: () -> Unit = {},
-    val onMensaje: () -> Unit = {}
+    val onMensaje: () -> Unit = {},
+    val onSms: (String) -> Unit = {},
+    val onWhatsApp: (String) -> Unit = {},
+    val onTelegram: (String) -> Unit = {},
+    val onCerrarOpcionesExternas: () -> Unit = {}
 )
 
 class DetalleContactoPreviewParameterProvider : PreviewParameterProvider<DetalleContactoUiState> {

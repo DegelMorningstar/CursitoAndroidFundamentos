@@ -1,5 +1,6 @@
 package com.yaeldev.cursitodefundamentosandroid.core.di
 
+import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.yaeldev.cursitodefundamentosandroid.CursitoApplication
@@ -12,6 +13,8 @@ import com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.push.Not
 import com.yaeldev.cursitodefundamentosandroid.feature.chat.domain.repositories.ChatRepository
 import com.yaeldev.cursitodefundamentosandroid.feature.contactos.data.remote.firestore.ContactoRepositoryFirestore
 import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.repositories.ContactoRepository
+import com.yaeldev.cursitodefundamentosandroid.feature.onboarding.data.local.OnboardingPreferencesSharedPrefs
+import com.yaeldev.cursitodefundamentosandroid.feature.onboarding.domain.repositories.OnboardingPreferences
 import com.yaeldev.cursitodefundamentosandroid.feature.perfil.data.remote.firebase.PerfilRepositoryFirebase
 import com.yaeldev.cursitodefundamentosandroid.feature.perfil.domain.repositories.PerfilRepository
 
@@ -26,9 +29,13 @@ interface AppContainer {
     val contactos: ContactosContainer
     val chat: ChatContainer
     val perfil: PerfilContainer
+    val onboarding: OnboardingContainer
 }
 
-class DefaultAppContainer : AppContainer {
+class DefaultAppContainer(
+    // Necesario para preferencias locales (SharedPreferences del onboarding).
+    private val context: Context
+) : AppContainer {
 
     // Servicio de push genérico, único para toda la app (reutilizable por cualquier feature).
     private val notificadorPush: NotificadorPush by lazy { NotificadorPushWorker() }
@@ -40,6 +47,9 @@ class DefaultAppContainer : AppContainer {
         ChatRepositoryFirestore(notificadorChat = NotificadorMensajesChat(notificadorPush))
     }
     private val perfilRepository: PerfilRepository by lazy { PerfilRepositoryFirebase() }
+    private val onboardingPreferences: OnboardingPreferences by lazy {
+        OnboardingPreferencesSharedPrefs(context)
+    }
 
     override val auth: AuthContainer by lazy { AuthContainer(authRepository) }
     override val contactos: ContactosContainer by lazy {
@@ -47,6 +57,7 @@ class DefaultAppContainer : AppContainer {
     }
     override val chat: ChatContainer by lazy { ChatContainer(chatRepository) }
     override val perfil: PerfilContainer by lazy { PerfilContainer(perfilRepository, authRepository) }
+    override val onboarding: OnboardingContainer by lazy { OnboardingContainer(onboardingPreferences) }
 }
 
 /** Acceso al container desde Compose (dueño: el Application). */

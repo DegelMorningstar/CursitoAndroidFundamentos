@@ -47,7 +47,27 @@ fun DetalleContactoRoot(
                 lanzarIntent(context, Intent(Intent.ACTION_SENDTO, Uri.parse("mailto:$email")))
             },
             onToggleFavorite = viewModel::alternarFavorito,
-            onMensaje = { viewModel.abrirChat(onNavigateToChat) }
+            onMensaje = { viewModel.abrirChat(onNavigateToChat) },
+            onSms = { phone ->
+                lanzarIntent(context, Intent(Intent.ACTION_SENDTO, Uri.parse("smsto:$phone")))
+            },
+            onWhatsApp = { phone ->
+                abrirMensajeriaExterna(
+                    context = context,
+                    paquete = "com.whatsapp",
+                    uri = Uri.parse("https://wa.me/${telefonoInternacional(phone)}"),
+                    nombreApp = "WhatsApp"
+                )
+            },
+            onTelegram = { phone ->
+                abrirMensajeriaExterna(
+                    context = context,
+                    paquete = "org.telegram.messenger",
+                    uri = Uri.parse("tg://resolve?phone=${telefonoInternacional(phone)}"),
+                    nombreApp = "Telegram"
+                )
+            },
+            onCerrarOpcionesExternas = viewModel::cerrarOpcionesExternas
         )
     }
 
@@ -70,3 +90,24 @@ private fun lanzarIntent(context: android.content.Context, intent: Intent) {
         Toast.makeText(context, "No hay una app para esta accion", Toast.LENGTH_SHORT).show()
     }
 }
+
+/**
+ * Abre una mensajeria externa (WhatsApp/Telegram) en su app; si no esta instalada
+ * avisa al usuario en vez de fallar en silencio.
+ */
+private fun abrirMensajeriaExterna(
+    context: android.content.Context,
+    paquete: String,
+    uri: Uri,
+    nombreApp: String
+) {
+    val intent = Intent(Intent.ACTION_VIEW, uri).setPackage(paquete)
+    try {
+        context.startActivity(intent)
+    } catch (e: ActivityNotFoundException) {
+        Toast.makeText(context, "$nombreApp no esta instalado", Toast.LENGTH_SHORT).show()
+    }
+}
+
+/** Deja solo digitos (WhatsApp/Telegram esperan el numero con lada y sin '+' ni espacios). */
+private fun telefonoInternacional(phone: String): String = phone.filter { it.isDigit() }

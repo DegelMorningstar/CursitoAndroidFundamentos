@@ -9,6 +9,7 @@ import com.yaeldev.cursitodefundamentosandroid.feature.auth.presentation.navigat
 import com.yaeldev.cursitodefundamentosandroid.feature.auth.presentation.navigation.authGraph
 import com.yaeldev.cursitodefundamentosandroid.feature.chat.presentation.navigation.chatGraph
 import com.yaeldev.cursitodefundamentosandroid.feature.contactos.presentation.navigation.contactosGraph
+import com.yaeldev.cursitodefundamentosandroid.feature.onboarding.presentation.navigation.onboardingGraph
 import com.yaeldev.cursitodefundamentosandroid.feature.perfil.presentation.navigation.perfilGraph
 
 @Composable
@@ -16,6 +17,7 @@ fun AppHost(
     modifier: Modifier = Modifier,
     navController: NavHostController,
     startDestination:Any = Login,
+    haySesion: Boolean = false,
     temaOscuro: Boolean = false,
     onToggleTema: (Boolean) -> Unit = {},
     mostrarMensaje: (String) -> Unit = {},
@@ -25,6 +27,7 @@ fun AppHost(
         navController = navController,
         startDestination = startDestination
     ) {
+        onboardingGraph(navController, haySesion)
         authGraph(navController)
         contactosGraph(navController,mostrarMensaje)
         perfilGraph(navController,temaOscuro,mostrarMensaje,onToggleTema)

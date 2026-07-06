@@ -18,21 +18,28 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Send
+import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.width
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.material3.TopAppBarDefaults.topAppBarColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -70,6 +77,17 @@ fun DetalleContactoScreen(
                 mostrarDialogoEliminar = false
                 actions.onDelete()
             }
+        )
+    }
+
+    val estadoExterno = uiState as? DetalleContactoUiState.Success
+    if (estadoExterno?.mostrarOpcionesExternas == true) {
+        OpcionesMensajeriaSheet(
+            phone = estadoExterno.phone,
+            onSms = actions.onSms,
+            onWhatsApp = actions.onWhatsApp,
+            onTelegram = actions.onTelegram,
+            onDismiss = actions.onCerrarOpcionesExternas
         )
     }
 
@@ -237,6 +255,94 @@ private fun InfoCard(phone: String, email: String, company: String) {
             InfoCardRow(icon = Icons.Filled.Email, label = "Correo", value = email)
             InfoCardRow(icon = Icons.Filled.Home, label = "Empresa", value = company)
         }
+    }
+}
+
+/**
+ * Hoja inferior que se muestra cuando el contacto no es usuario de la app: ofrece
+ * iniciar la conversacion por una mensajeria externa usando su telefono.
+ */
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun OpcionesMensajeriaSheet(
+    phone: String,
+    onSms: (String) -> Unit,
+    onWhatsApp: (String) -> Unit,
+    onTelegram: (String) -> Unit,
+    onDismiss: () -> Unit
+) {
+    ModalBottomSheet(onDismissRequest = onDismiss) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 24.dp)
+        ) {
+            Text(
+                text = "Enviar mensaje",
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onSurface,
+                modifier = Modifier.padding(horizontal = 24.dp, vertical = 4.dp)
+            )
+            Text(
+                text = "Este contacto no usa la app. Elige por donde chatear:",
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(horizontal = 24.dp)
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            HorizontalDivider()
+            OpcionMensajeria(
+                icon = Icons.Filled.MailOutline,
+                label = "SMS",
+                onClick = {
+                    onDismiss()
+                    onSms(phone)
+                }
+            )
+            OpcionMensajeria(
+                icon = Icons.Filled.Call,
+                label = "WhatsApp",
+                onClick = {
+                    onDismiss()
+                    onWhatsApp(phone)
+                }
+            )
+            OpcionMensajeria(
+                icon = Icons.AutoMirrored.Filled.Send,
+                label = "Telegram",
+                onClick = {
+                    onDismiss()
+                    onTelegram(phone)
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun OpcionMensajeria(
+    icon: ImageVector,
+    label: String,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable(onClick = onClick)
+            .padding(horizontal = 24.dp, vertical = 16.dp),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Icon(
+            imageVector = icon,
+            contentDescription = null,
+            tint = MaterialTheme.colorScheme.primary
+        )
+        Spacer(modifier = Modifier.width(20.dp))
+        Text(
+            text = label,
+            style = MaterialTheme.typography.bodyLarge,
+            color = MaterialTheme.colorScheme.onSurface
+        )
     }
 }
 

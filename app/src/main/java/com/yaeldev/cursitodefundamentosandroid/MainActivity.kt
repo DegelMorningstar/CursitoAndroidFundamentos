@@ -32,8 +32,7 @@ import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.yaeldev.cursitodefundamentosandroid.core.ui.components.AppSnackbar
 import com.yaeldev.cursitodefundamentosandroid.core.ui.theme.AppTheme
-import com.yaeldev.cursitodefundamentosandroid.feature.auth.presentation.navigation.Login
-import com.yaeldev.cursitodefundamentosandroid.feature.contactos.presentation.navigation.ListaContacto
+import com.yaeldev.cursitodefundamentosandroid.feature.onboarding.presentation.navigation.Splash
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -48,8 +47,9 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         crearCanalMensajes(this)
         FirebaseAuth.getInstance().addAuthStateListener(authListener)
-        val destinoInicial: Any =
-            if (FirebaseAuth.getInstance().currentUser != null) ListaContacto else Login
+        // El arranque siempre pasa por el Splash; este decide a donde ir. `haySesion`
+        // (sesion persistida) elige entre Home y Login cuando ya se vio el onboarding.
+        val haySesion = FirebaseAuth.getInstance().currentUser != null
         setContent {
             // Preferencia de tema en memoria (aun no se persiste).
             var temaOscuro by remember { mutableStateOf(false) }
@@ -62,7 +62,8 @@ class MainActivity : ComponentActivity() {
                     AppHost(
                         modifier = Modifier.statusBarsPadding(),
                         navController = navController,
-                        startDestination = destinoInicial,
+                        startDestination = Splash,
+                        haySesion = haySesion,
                         temaOscuro = temaOscuro,
                         onToggleTema = { temaOscuro = it },
                         mostrarMensaje = { mensaje ->

@@ -99,12 +99,21 @@ class DetalleContactoViewModel(
 
     /**
      * Resuelve el correo del contacto contra el directorio de usuarios; si es un
-     * usuario de la app, abre/crea el chat y navega. Si no, muestra un aviso.
+     * usuario de la app, abre/crea el chat y navega. Si no, ofrece chatear por una
+     * mensajeria externa (SMS/WhatsApp/Telegram) mostrando las opciones.
      */
     fun abrirChat(onChatListo: (chatId: String, titulo: String, otroUid: String) -> Unit) {
         val actual = _uiState.value as? DetalleContactoUiState.Success ?: return
+        // Sin correo no se puede resolver contra el directorio; si hay telefono,
+        // ofrecemos directamente la mensajeria externa.
         if (actual.email.isBlank()) {
-            _uiState.update { actual.copy(error = "Este contacto no tiene correo para chatear.") }
+            _uiState.update {
+                if (actual.phone.isBlank()) {
+                    actual.copy(error = "Este contacto no tiene correo ni telefono para chatear.")
+                } else {
+                    actual.copy(error = null, mostrarOpcionesExternas = true)
+                }
+            }
             return
         }
         viewModelScope.launch {
@@ -113,8 +122,13 @@ class DetalleContactoViewModel(
                 is Result.Success -> {
                     val usuario = busqueda.data
                     if (usuario == null) {
+                        // No es usuario de la app: ofrecer SMS/WhatsApp/Telegram si hay telefono.
                         _uiState.update {
-                            actual.copy(error = "Este contacto aun no es usuario de la app.")
+                            if (actual.phone.isBlank()) {
+                                actual.copy(error = "Este contacto aun no es usuario de la app y no tiene telefono.")
+                            } else {
+                                actual.copy(error = null, mostrarOpcionesExternas = true)
+                            }
                         }
                         return@launch
                     }
@@ -125,6 +139,12 @@ class DetalleContactoViewModel(
                 }
             }
         }
+    }
+
+    /** Cierra la hoja de opciones de mensajeria externa. */
+    fun cerrarOpcionesExternas() {
+        val actual = _uiState.value as? DetalleContactoUiState.Success ?: return
+        _uiState.update { actual.copy(mostrarOpcionesExternas = false) }
     }
 
 }
