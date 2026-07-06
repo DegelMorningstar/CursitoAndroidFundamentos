@@ -7,4 +7,6 @@ object Catalogo {
     const val MENSAJES = "mensajes"
     const val COLECCION = "contactos"
     const val CAMPO_OWNER = "owner"
+    const val CAMPO_FCM_TOKEN = "fcmToken"
+    const val WORKER_PUSH_URL = "https://cursito-push.yaelmontes181122.workers.dev"
 }

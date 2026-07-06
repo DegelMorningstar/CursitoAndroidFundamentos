@@ -15,18 +15,20 @@ import com.yaeldev.cursitodefundamentosandroid.core.network.ejecutar
 import com.yaeldev.cursitodefundamentosandroid.core.network.toMessage
 import com.yaeldev.cursitodefundamentosandroid.core.util.Catalogo.CHATS
 import com.yaeldev.cursitodefundamentosandroid.core.util.Catalogo.MENSAJES
+import com.yaeldev.cursitodefundamentosandroid.core.push.NotificadorPushWorker
 import com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.dto.MensajeDocument
 import com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.mappers.toChat
 import com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.mappers.toMensaje
+import com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.push.NotificadorMensajesChat
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
-import kotlin.coroutines.cancellation.CancellationException
 
 class ChatRepositoryFirestore(
     private val db: FirebaseFirestore = Firebase.firestore,
-    private val auth: FirebaseAuth = FirebaseAuth.getInstance()
+    private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
+    private val notificadorChat: NotificadorMensajesChat = NotificadorMensajesChat(NotificadorPushWorker())
 ) : ChatRepository {
 
     private val chats get() = db.collection(CHATS)
@@ -80,6 +82,8 @@ class ChatRepositoryFirestore(
             ),
             SetOptions.merge()
         ).await()
+        // Dispara el push (best-effort): no debe afectar el resultado del envío.
+        notificadorChat.notificarNuevoMensaje(chatId, texto)
         Unit
     }
 
@@ -115,6 +119,4 @@ class ChatRepositoryFirestore(
 
     private fun uid(): String =
         auth.currentUser?.uid ?: throw IllegalStateException("No hay sesion activa")
-
-
 }

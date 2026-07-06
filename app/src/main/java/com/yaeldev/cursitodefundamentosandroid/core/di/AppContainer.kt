@@ -3,9 +3,12 @@ package com.yaeldev.cursitodefundamentosandroid.core.di
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.yaeldev.cursitodefundamentosandroid.CursitoApplication
+import com.yaeldev.cursitodefundamentosandroid.core.push.NotificadorPush
+import com.yaeldev.cursitodefundamentosandroid.core.push.NotificadorPushWorker
 import com.yaeldev.cursitodefundamentosandroid.feature.auth.data.remote.firebase.AuthRepositoryFirebase
 import com.yaeldev.cursitodefundamentosandroid.feature.auth.domain.repositories.AuthRepository
 import com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.firestore.ChatRepositoryFirestore
+import com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.push.NotificadorMensajesChat
 import com.yaeldev.cursitodefundamentosandroid.feature.chat.domain.repositories.ChatRepository
 import com.yaeldev.cursitodefundamentosandroid.feature.contactos.data.remote.firestore.ContactoRepositoryFirestore
 import com.yaeldev.cursitodefundamentosandroid.feature.contactos.domain.repositories.ContactoRepository
@@ -27,10 +30,15 @@ interface AppContainer {
 
 class DefaultAppContainer : AppContainer {
 
+    // Servicio de push genérico, único para toda la app (reutilizable por cualquier feature).
+    private val notificadorPush: NotificadorPush by lazy { NotificadorPushWorker() }
+
     // Una sola instancia de cada repositorio para toda la app.
     private val contactoRepository: ContactoRepository by lazy { ContactoRepositoryFirestore() }
     private val authRepository: AuthRepository by lazy { AuthRepositoryFirebase() }
-    private val chatRepository: ChatRepository by lazy { ChatRepositoryFirestore() }
+    private val chatRepository: ChatRepository by lazy {
+        ChatRepositoryFirestore(notificadorChat = NotificadorMensajesChat(notificadorPush))
+    }
     private val perfilRepository: PerfilRepository by lazy { PerfilRepositoryFirebase() }
 
     override val auth: AuthContainer by lazy { AuthContainer(authRepository) }

@@ -1,9 +1,20 @@
 package com.yaeldev.cursitodefundamentosandroid
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
+import com.yaeldev.cursitodefundamentosandroid.core.notifications.crearCanalMensajes
+import com.yaeldev.cursitodefundamentosandroid.core.notifications.registrarTokenFcm
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -26,9 +37,17 @@ import com.yaeldev.cursitodefundamentosandroid.feature.contactos.presentation.na
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
+
+    // Registra el token FCM cuando hay sesión (login o arranque con sesión activa).
+    private val authListener = FirebaseAuth.AuthStateListener { auth ->
+        if (auth.currentUser != null) registrarTokenFcm()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        crearCanalMensajes(this)
+        FirebaseAuth.getInstance().addAuthStateListener(authListener)
         val destinoInicial: Any =
             if (FirebaseAuth.getInstance().currentUser != null) ListaContacto else Login
         setContent {
@@ -36,6 +55,7 @@ class MainActivity : ComponentActivity() {
             var temaOscuro by remember { mutableStateOf(false) }
             val navController = rememberNavController()
             AppTheme(darkTheme = temaOscuro) {
+                PedirPermisoNotificaciones()
                 val snackbarHostState = remember { SnackbarHostState() }
                 val scope = rememberCoroutineScope()
                 Box(modifier = Modifier.fillMaxSize()) {
@@ -60,5 +80,26 @@ class MainActivity : ComponentActivity() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        FirebaseAuth.getInstance().removeAuthStateListener(authListener)
+        super.onDestroy()
+    }
+}
+
+/** Pide el permiso POST_NOTIFICATIONS en Android 13+ (no-op en versiones previas). */
+@Composable
+private fun PedirPermisoNotificaciones() {
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) return
+    val context = LocalContext.current
+    val launcher = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { }
+    LaunchedEffect(Unit) {
+        val concedido = ContextCompat.checkSelfPermission(
+            context, Manifest.permission.POST_NOTIFICATIONS
+        ) == PackageManager.PERMISSION_GRANTED
+        if (!concedido) launcher.launch(Manifest.permission.POST_NOTIFICATIONS)
     }
 }

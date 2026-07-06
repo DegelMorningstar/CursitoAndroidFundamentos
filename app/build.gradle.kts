@@ -72,6 +72,14 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore")
     // Firebase Authentication (login/registro con correo y contraseña)
     implementation("com.google.firebase:firebase-auth")
+    // Firebase Cloud Messaging (push; el envío lo dispara un Cloudflare Worker)
+    implementation("com.google.firebase:firebase-messaging")
     // await() sobre las Task de Play Services desde corrutinas
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.9.0")
+    // Retrofit para el POST al Worker de push (converter kotlinx-serialization,
+    // reutiliza kotlinx-serialization-json; no agrega Gson)
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-kotlinx-serialization:2.11.0")
+    // okhttp 4.x: aporta la extension toMediaType() que usa el converter
+    implementation("com.squareup.okhttp3:okhttp:4.12.0")
 }
