@@ -4,8 +4,8 @@ import android.content.Context
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import com.yaeldev.cursitodefundamentosandroid.CursitoApplication
-import com.yaeldev.cursitodefundamentosandroid.core.push.NotificadorPush
-import com.yaeldev.cursitodefundamentosandroid.core.push.NotificadorPushWorker
+import com.yaeldev.cursitodefundamentosandroid.core.notifications.push.NotificadorPush
+import com.yaeldev.cursitodefundamentosandroid.core.notifications.push.NotificadorPushWorker
 import com.yaeldev.cursitodefundamentosandroid.feature.auth.data.remote.firebase.AuthRepositoryFirebase
 import com.yaeldev.cursitodefundamentosandroid.feature.auth.domain.repositories.AuthRepository
 import com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.firestore.ChatRepositoryFirestore

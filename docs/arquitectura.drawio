@@ -1,0 +1,291 @@
+<mxfile host="app.diagrams.net" agent="Claude Code" version="24.0.0">
+  <diagram name="1. Vista general" id="vista-general">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Bandas (capas) -->
+        <mxCell id="bandA" value="App y navegación" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;verticalAlign=top;fontStyle=1;fontSize=13;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="40" width="1120" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="bandB" value="Presentación — por feature (Root · Screen · ViewModel · Estado)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;verticalAlign=top;fontStyle=1;fontSize=13;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="150" width="1120" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="bandC" value="Dominio — reglas de negocio (casos de uso · contratos de repositorio · modelos)" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;verticalAlign=top;fontStyle=1;fontSize=13;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="320" width="1120" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="bandD" value="Datos — implementaciones y traducción de datos" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;verticalAlign=top;fontStyle=1;fontSize=13;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="450" width="1120" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="bandE" value="Backend y almacenamiento" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;verticalAlign=top;fontStyle=1;fontSize=13;align=left;spacingLeft=10;" vertex="1" parent="1">
+          <mxGeometry x="40" y="590" width="1120" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- Banda A -->
+        <mxCell id="mainActivity" value="Punto de entrada de la app" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="90" y="78" width="200" height="44" as="geometry" />
+        </mxCell>
+        <mxCell id="appHost" value="Contenedor de navegación&#10;(monta pantallas y define el mapa de rutas)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="330" y="72" width="270" height="56" as="geometry" />
+        </mxCell>
+
+        <!-- Banda B: features -->
+        <mxCell id="fOnb" value="Onboarding&#10;(Bienvenida + introducción)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="70" y="205" width="190" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fAuth" value="Autenticación&#10;(registro · inicio de sesión)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="285" y="205" width="190" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fCont" value="Contactos&#10;(lista · favoritos · detalle · alta/edición · búsqueda)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="500" y="205" width="190" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fChat" value="Chat&#10;(conversación · bandeja de conversaciones)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="715" y="205" width="190" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="fPerf" value="Perfil&#10;(mi perfil · perfil de otros)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="930" y="205" width="190" height="80" as="geometry" />
+        </mxCell>
+
+        <!-- Banda C: dominio -->
+        <mxCell id="dUse" value="Casos de uso&#10;(acciones de negocio)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="90" y="360" width="300" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="dRepoInt" value="Contratos de repositorio&#10;(qué datos se piden, no cómo)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="450" y="360" width="300" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="dModels" value="Modelos de dominio&#10;(contacto · usuario · mensaje · estado)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="810" y="360" width="300" height="55" as="geometry" />
+        </mxCell>
+
+        <!-- Banda D: datos -->
+        <mxCell id="rContChat" value="Repositorios de&#10;Contactos y Chat" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="80" y="495" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rAuthPerf" value="Repositorios de&#10;Autenticación y Perfil" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="360" y="495" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rMap" value="Traducción de datos&#10;(externo ⇄ modelos de dominio)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="640" y="495" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="rOnb" value="Preferencia de&#10;onboarding (local)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="920" y="495" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Banda E: backend -->
+        <mxCell id="bAuth" value="Servicio de identidad&#10;(cuentas y sesión)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="80" y="635" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bDb" value="Base de datos en la nube&#10;(contactos · usuarios · chats/mensajes)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="360" y="635" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bPush" value="Servicio de envío de&#10;avisos (notificaciones push)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="640" y="635" width="230" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="bLocal" value="Almacenamiento local&#10;(preferencia de primer arranque)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="920" y="635" width="200" height="60" as="geometry" />
+        </mxCell>
+
+        <!-- Columna lateral: DI y Core -->
+        <mxCell id="di" value="Ensamblado de dependencias&#10;&#10;Crea una sola instancia de cada repositorio y provee lo que cada pantalla necesita." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="150" width="230" height="150" as="geometry" />
+        </mxCell>
+        <mxCell id="core" value="Elementos compartidos&#10;&#10;Apariencia (claro/oscuro), componentes visuales, manejo de resultados y errores, avisos." style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;verticalAlign=top;spacingTop=8;" vertex="1" parent="1">
+          <mxGeometry x="1200" y="320" width="230" height="250" as="geometry" />
+        </mxCell>
+
+        <!-- Edges principales -->
+        <mxCell id="e1" style="endArrow=block;html=1;strokeColor=#333333;" edge="1" parent="1" source="mainActivity" target="appHost">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e2" value="monta pantallas y navega" style="endArrow=block;html=1;strokeColor=#333333;fontSize=11;" edge="1" parent="1" source="appHost" target="fCont">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e3" value="invocan" style="endArrow=block;html=1;strokeColor=#333333;fontSize=11;" edge="1" parent="1" source="fCont" target="dUse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e4" value="dependen de" style="endArrow=block;html=1;strokeColor=#333333;fontSize=11;" edge="1" parent="1" source="dUse" target="dRepoInt">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e5" value="implementados por" style="endArrow=block;html=1;strokeColor=#333333;fontSize=11;" edge="1" parent="1" source="dRepoInt" target="rContChat">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e6" value="leen/escriben" style="endArrow=block;html=1;strokeColor=#333333;fontSize=11;" edge="1" parent="1" source="rContChat" target="bDb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e7" value="autentican" style="endArrow=block;html=1;strokeColor=#333333;fontSize=11;" edge="1" parent="1" source="rAuthPerf" target="bAuth">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e8" value="disparan avisos" style="endArrow=block;html=1;dashed=1;strokeColor=#b85450;fontSize=11;" edge="1" parent="1" source="rContChat" target="bPush">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e9" value="guarda" style="endArrow=block;html=1;strokeColor=#333333;fontSize=11;" edge="1" parent="1" source="rOnb" target="bLocal">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e10" value="provee pantallas/estado" style="endArrow=block;html=1;dashed=1;strokeColor=#9673a6;fontSize=11;" edge="1" parent="1" source="di" target="fPerf">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e11" value="crea repositorios" style="endArrow=block;html=1;dashed=1;strokeColor=#9673a6;fontSize=11;" edge="1" parent="1" source="di" target="rOnb">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram name="2. Patrón por pantalla (flujo unidireccional)" id="patron-pantalla">
+    <mxGraphModel dx="1000" dy="700" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="actor" value="Persona usuaria" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;strokeColor=#333333;fillColor=#ffffff;" vertex="1" parent="1">
+          <mxGeometry x="80" y="70" width="40" height="80" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pRoot" value="Contenedor con estado&#10;(obtiene la lógica de pantalla y observa el estado)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="60" y="220" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="pScreen" value="Pantalla visual (sin estado)&#10;muestra el estado y emite acciones" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="380" y="220" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="pState" value="Estado + Acciones&#10;(lo que se ve + lo que se puede hacer)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="700" y="220" width="220" height="70" as="geometry" />
+        </mxCell>
+
+        <mxCell id="pVm" value="Lógica de pantalla&#10;(recibe acciones, calcula el nuevo estado)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="380" y="360" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="pUse" value="Caso de uso" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="410" y="480" width="160" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="pRepo" value="Repositorio (contrato)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="410" y="560" width="160" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="pData" value="Fuente de datos (nube / local)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="390" y="640" width="200" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="note" value="Flujo unidireccional:&#10;los eventos suben, el estado baja." style="shape=note;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;size=14;" vertex="1" parent="1">
+          <mxGeometry x="720" y="380" width="220" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- Edges -->
+        <mxCell id="pe1" value="interactúa" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="actor" target="pScreen">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pe2" value="estado + acciones (baja)" style="endArrow=block;html=1;fontSize=11;strokeColor=#2d6a2d;" edge="1" parent="1" source="pRoot" target="pScreen">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pe3" value="acciones / eventos (sube)" style="endArrow=block;html=1;fontSize=11;strokeColor=#a04000;" edge="1" parent="1" source="pScreen" target="pVm">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pe4" style="endArrow=block;html=1;" edge="1" parent="1" source="pVm" target="pUse">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pe5" style="endArrow=block;html=1;" edge="1" parent="1" source="pUse" target="pRepo">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pe6" style="endArrow=block;html=1;" edge="1" parent="1" source="pRepo" target="pData">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pe7" value="resultado (regresa)" style="endArrow=block;html=1;dashed=1;fontSize=11;strokeColor=#6c8ebf;exitX=0;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="pData" target="pVm">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pe8" value="nuevo estado (baja)" style="endArrow=block;html=1;fontSize=11;strokeColor=#2d6a2d;" edge="1" parent="1" source="pVm" target="pRoot">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pe9" value="produce" style="endArrow=block;html=1;dashed=1;fontSize=11;" edge="1" parent="1" source="pVm" target="pState">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pe10" value="consume" style="endArrow=block;html=1;dashed=1;fontSize=11;" edge="1" parent="1" source="pState" target="pScreen">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram name="3. Arranque y navegación" id="flujo-navegacion">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="nStart" value="Inicio de la app" style="ellipse;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="80" y="60" width="140" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="nSplash" value="Pantalla de bienvenida&#10;(Splash)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="300" y="55" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nDec" value="¿Ya se vio la introducción?&#10;¿Hay sesión activa?" style="rhombus;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="560" y="40" width="200" height="90" as="geometry" />
+        </mxCell>
+
+        <mxCell id="nOnb" value="Introducción&#10;(2 pasos, se puede omitir)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="300" y="200" width="200" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nLogin" value="Inicio de sesión" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="560" y="200" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="nReg" value="Registro" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="560" y="290" width="180" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="nHome" value="Inicio: Contactos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="880" y="195" width="180" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="nFav" value="Favoritos" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="120" width="150" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="nChats" value="Conversaciones (bandeja)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="195" width="170" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="nPerf" value="Perfil" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e8f5e9;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="1120" y="270" width="150" height="45" as="geometry" />
+        </mxCell>
+
+        <mxCell id="nDetalle" value="Detalle de contacto" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="880" y="360" width="180" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="nNuevo" value="Nuevo contacto" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="640" y="440" width="160" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="nEditar" value="Editar contacto" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="840" y="470" width="160" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="nConv" value="Conversación" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1040" y="440" width="160" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="nExt" value="Mensajería externa&#10;(mensaje de texto · WhatsApp · Telegram)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="520" width="220" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="nOtroPerf" value="Perfil de otra persona" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="1030" y="360" width="180" height="45" as="geometry" />
+        </mxCell>
+
+        <!-- Edges -->
+        <mxCell id="f1" style="endArrow=block;html=1;" edge="1" parent="1" source="nStart" target="nSplash"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f2" style="endArrow=block;html=1;" edge="1" parent="1" source="nSplash" target="nDec"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f3" value="primer arranque" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="nDec" target="nOnb"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f4" value="ya visto · sin sesión" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="nDec" target="nLogin"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f5" value="ya visto · con sesión" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="nDec" target="nHome"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f6" value="Comenzar / Omitir&#10;(sin sesión)" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="nOnb" target="nLogin"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f7" value="autenticado" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="nLogin" target="nHome"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f8" value="crear cuenta" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="nLogin" target="nReg"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f9" value="registrado" style="endArrow=block;html=1;fontSize=11;exitX=1;exitY=0.5;entryX=0;entryY=1;" edge="1" parent="1" source="nReg" target="nHome"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="f10" value="pestañas" style="endArrow=block;html=1;fontSize=11;dashed=1;" edge="1" parent="1" source="nHome" target="nFav"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f11" style="endArrow=block;html=1;dashed=1;" edge="1" parent="1" source="nHome" target="nChats"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f12" style="endArrow=block;html=1;dashed=1;" edge="1" parent="1" source="nHome" target="nPerf"><mxGeometry relative="1" as="geometry" /></mxCell>
+
+        <mxCell id="f13" value="toca un contacto" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="nHome" target="nDetalle"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f14" value="agregar" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="nHome" target="nNuevo"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f15" value="editar" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="nDetalle" target="nEditar"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f16" value="mensaje (usa la app)" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="nDetalle" target="nConv"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f17" value="mensaje (no usa la app)" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="nDetalle" target="nExt"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f18" value="ver perfil" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="nDetalle" target="nOtroPerf"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f19" value="abrir conversación" style="endArrow=block;html=1;fontSize=11;" edge="1" parent="1" source="nChats" target="nConv"><mxGeometry relative="1" as="geometry" /></mxCell>
+        <mxCell id="f20" value="cerrar sesión" style="endArrow=block;html=1;fontSize=11;exitX=0.5;exitY=1;entryX=1;entryY=0;" edge="1" parent="1" source="nPerf" target="nLogin"><mxGeometry relative="1" as="geometry" /></mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

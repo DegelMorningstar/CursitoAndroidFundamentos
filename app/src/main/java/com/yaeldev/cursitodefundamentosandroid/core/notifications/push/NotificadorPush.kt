@@ -1,4 +1,4 @@
-package com.yaeldev.cursitodefundamentosandroid.core.push
+package com.yaeldev.cursitodefundamentosandroid.core.notifications.push
 
 import com.google.firebase.auth.FirebaseAuth
 import com.yaeldev.cursitodefundamentosandroid.core.util.Catalogo.WORKER_PUSH_URL

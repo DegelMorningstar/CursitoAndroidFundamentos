@@ -1,4 +1,4 @@
-package com.yaeldev.cursitodefundamentosandroid.core.push
+package com.yaeldev.cursitodefundamentosandroid.core.notifications.push
 
 import kotlinx.serialization.Serializable
 @Serializable

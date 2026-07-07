@@ -1,7 +1,7 @@
 package com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.push
 
 import com.google.firebase.auth.FirebaseAuth
-import com.yaeldev.cursitodefundamentosandroid.core.push.NotificadorPush
+import com.yaeldev.cursitodefundamentosandroid.core.notifications.push.NotificadorPush
 
 /**
  * Notificador **concreto de chat**: sabe cómo armar el push de "nuevo mensaje"
