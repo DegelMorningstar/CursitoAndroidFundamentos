@@ -1,18 +1,16 @@
-package com.yaeldev.cursitodefundamentosandroid.core.notifications.push
+package com.yaeldev.cursitodefundamentosandroid.core.data.remote
 
 import com.google.firebase.auth.FirebaseAuth
+import com.yaeldev.cursitodefundamentosandroid.core.data.remote.dto.PushRequest
+import com.yaeldev.cursitodefundamentosandroid.core.domain.repositories.NotificadorRepository
 import com.yaeldev.cursitodefundamentosandroid.core.util.Catalogo.WORKER_PUSH_URL
 import kotlinx.coroutines.tasks.await
 import kotlin.coroutines.cancellation.CancellationException
 
-interface NotificadorPush {
-    suspend fun enviar(destinatarioUid: String, titulo: String, cuerpo: String, grupo: String? = null)
-}
-
-class NotificadorPushWorker(
+class NotificadorRepositoryImpl(
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
     private val pushApi: PushApi = PushApiFactory.create()
-) : NotificadorPush {
+) : NotificadorRepository {
 
     override suspend fun enviar(
         destinatarioUid: String,

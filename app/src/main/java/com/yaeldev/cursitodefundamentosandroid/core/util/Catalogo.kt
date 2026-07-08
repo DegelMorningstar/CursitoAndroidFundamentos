@@ -1,6 +1,8 @@
 package com.yaeldev.cursitodefundamentosandroid.core.util
 
 object Catalogo {
+    const val SHARED_PREFERENCES_ONBOARDING_KEY = "onboarding_prefs"
+    const val SHARED_PREFERENCES_USER = "user_prefs"
     const val USUARIOS = "usuarios"
     const val CAMPO_EMAIL = "email"
     const val CHATS = "chats"

@@ -70,7 +70,10 @@ fun PerfilRoot(
                 )
             },
             onGuardar = { viewModel.guardar() },
-            onToggleTema = onToggleTema,
+            onToggleTema = { newValue ->
+                onToggleTema.invoke(newValue)
+                viewModel.guardarTema(newValue)
+            },
             onCerrarSesion = { viewModel.cerrarSesion(onSesionCerrada) },
             onNavigateToContactos = onNavigateToContactos,
             onNavigateToFavoritos = onNavigateToFavoritos,

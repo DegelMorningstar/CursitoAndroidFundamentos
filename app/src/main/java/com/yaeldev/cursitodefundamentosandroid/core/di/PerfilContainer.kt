@@ -3,6 +3,8 @@ package com.yaeldev.cursitodefundamentosandroid.core.di
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewmodel.initializer
 import androidx.lifecycle.viewmodel.viewModelFactory
+import com.yaeldev.cursitodefundamentosandroid.core.domain.repositories.UserPreferences
+import com.yaeldev.cursitodefundamentosandroid.core.domain.usecases.CambiarTemaUseCase
 import com.yaeldev.cursitodefundamentosandroid.feature.auth.domain.repositories.AuthRepository
 import com.yaeldev.cursitodefundamentosandroid.feature.auth.domain.usecases.CerrarSesionUseCase
 import com.yaeldev.cursitodefundamentosandroid.feature.perfil.domain.repositories.PerfilRepository
@@ -19,7 +21,8 @@ import com.yaeldev.cursitodefundamentosandroid.feature.perfil.presentation.perfi
  */
 class PerfilContainer(
     private val perfilRepository: PerfilRepository,
-    private val authRepository: AuthRepository
+    private val authRepository: AuthRepository,
+    private val userPreferences: UserPreferences
 ) {
     val factory: ViewModelProvider.Factory = viewModelFactory {
         initializer {
@@ -27,7 +30,8 @@ class PerfilContainer(
                 ObtenerUsuarioActualUseCase(perfilRepository),
                 ObtenerPerfilUseCase(perfilRepository),
                 ActualizarPerfilUseCase(perfilRepository),
-                CerrarSesionUseCase(authRepository)
+                CerrarSesionUseCase(authRepository),
+                CambiarTemaUseCase(userPreferences)
             )
         }
         initializer { DetallePerfilViewModel(ObtenerUsuarioPorIdUseCase(perfilRepository)) }

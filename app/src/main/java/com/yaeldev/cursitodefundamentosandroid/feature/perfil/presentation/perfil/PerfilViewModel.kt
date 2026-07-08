@@ -2,6 +2,7 @@ package com.yaeldev.cursitodefundamentosandroid.feature.perfil.presentation.perf
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.yaeldev.cursitodefundamentosandroid.core.domain.usecases.CambiarTemaUseCase
 import com.yaeldev.cursitodefundamentosandroid.feature.perfil.domain.models.EstadoUsuario
 import com.yaeldev.cursitodefundamentosandroid.feature.perfil.domain.usecases.ActualizarPerfilUseCase
 import com.yaeldev.cursitodefundamentosandroid.feature.auth.domain.usecases.CerrarSesionUseCase
@@ -19,7 +20,8 @@ class PerfilViewModel(
     obtenerUsuarioActual: ObtenerUsuarioActualUseCase,
     private val obtenerPerfil: ObtenerPerfilUseCase,
     private val actualizarPerfil: ActualizarPerfilUseCase,
-    private val cerrarSesionUseCase: CerrarSesionUseCase
+    private val cerrarSesionUseCase: CerrarSesionUseCase,
+    private val cambiarTemaUseCase: CambiarTemaUseCase
 ) : ViewModel() {
 
     // Valores inmediatos de FirebaseAuth (nombre/email); foto/estado llegan async.
@@ -72,6 +74,10 @@ class PerfilViewModel(
     /** Limpia el mensaje de exito una vez mostrado en el snackbar. */
     fun mensajeConsumido() {
         _uiState.update { it.copy(mensaje = null) }
+    }
+
+    fun guardarTema(isDarkMode: Boolean) {
+        cambiarTemaUseCase.invoke(isDarkMode)
     }
 
     fun guardar() {

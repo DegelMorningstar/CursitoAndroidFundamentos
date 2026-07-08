@@ -15,7 +15,7 @@ import com.yaeldev.cursitodefundamentosandroid.core.network.ejecutar
 import com.yaeldev.cursitodefundamentosandroid.core.network.toMessage
 import com.yaeldev.cursitodefundamentosandroid.core.util.Catalogo.CHATS
 import com.yaeldev.cursitodefundamentosandroid.core.util.Catalogo.MENSAJES
-import com.yaeldev.cursitodefundamentosandroid.core.notifications.push.NotificadorPushWorker
+import com.yaeldev.cursitodefundamentosandroid.core.data.remote.NotificadorRepositoryImpl
 import com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.dto.MensajeDocument
 import com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.mappers.toChat
 import com.yaeldev.cursitodefundamentosandroid.feature.chat.data.remote.mappers.toMensaje
@@ -28,7 +28,7 @@ import kotlinx.coroutines.tasks.await
 class ChatRepositoryFirestore(
     private val db: FirebaseFirestore = Firebase.firestore,
     private val auth: FirebaseAuth = FirebaseAuth.getInstance(),
-    private val notificadorChat: NotificadorMensajesChat = NotificadorMensajesChat(NotificadorPushWorker())
+    private val notificadorChat: NotificadorMensajesChat = NotificadorMensajesChat(NotificadorRepositoryImpl())
 ) : ChatRepository {
 
     private val chats get() = db.collection(CHATS)

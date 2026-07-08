@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.compose.setContent
@@ -30,6 +31,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.yaeldev.cursitodefundamentosandroid.core.data.local.UserPreferencesImpl
+import com.yaeldev.cursitodefundamentosandroid.core.di.AppContainer
+import com.yaeldev.cursitodefundamentosandroid.core.di.appContainer
+import com.yaeldev.cursitodefundamentosandroid.core.domain.usecases.ObtenerTemaUseCase
+import com.yaeldev.cursitodefundamentosandroid.core.security.AesCipher
 import com.yaeldev.cursitodefundamentosandroid.core.ui.components.AppSnackbar
 import com.yaeldev.cursitodefundamentosandroid.core.ui.theme.AppTheme
 import com.yaeldev.cursitodefundamentosandroid.feature.onboarding.presentation.navigation.Splash
@@ -52,7 +58,8 @@ class MainActivity : ComponentActivity() {
         val haySesion = FirebaseAuth.getInstance().currentUser != null
         setContent {
             // Preferencia de tema en memoria (aun no se persiste).
-            var temaOscuro by remember { mutableStateOf(false) }
+            val isDarkMode = ObtenerTemaUseCase(UserPreferencesImpl(this)).invoke()
+            var temaOscuro by remember { mutableStateOf(isDarkMode) }
             val navController = rememberNavController()
             AppTheme(darkTheme = temaOscuro) {
                 PedirPermisoNotificaciones()

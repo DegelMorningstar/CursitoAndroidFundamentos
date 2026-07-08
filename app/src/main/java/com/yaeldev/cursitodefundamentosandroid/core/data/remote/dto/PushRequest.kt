@@ -1,6 +1,7 @@
-package com.yaeldev.cursitodefundamentosandroid.core.notifications.push
+package com.yaeldev.cursitodefundamentosandroid.core.data.remote.dto
 
 import kotlinx.serialization.Serializable
+
 @Serializable
 data class PushRequest(
     val idToken: String,
