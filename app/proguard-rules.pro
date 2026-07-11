@@ -19,3 +19,18 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Modelos que Firestore deserializa por reflexión (Contacto, Usuario, Mensaje, Chat...)
+-keep class com.yaeldev.cursitodefundamentosandroid.**.domain.models.** { *; }
+-keep class com.yaeldev.cursitodefundamentosandroid.**.data.**.dto.** { *; }
+
+# kotlinx-serialization (rutas @Serializable)
+-keepattributes *Annotation*, InnerClasses
+-if @kotlinx.serialization.Serializable class **
+-keepclassmembers class <1> { *** Companion; }
+-keepclasseswithmembers class ** { kotlinx.serialization.KSerializer serializer(...); }
+
+# Retrofit + converter kotlinx-serialization
+-keepattributes Signature, Exceptions
+-dontwarn okhttp3.**
+-dontwarn retrofit2.**

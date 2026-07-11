@@ -38,6 +38,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
+import com.yaeldev.cursitodefundamentosandroid.BuildConfig
 import com.yaeldev.cursitodefundamentosandroid.core.ui.components.AppBottomBar
 import com.yaeldev.cursitodefundamentosandroid.core.ui.components.AppTab
 import com.yaeldev.cursitodefundamentosandroid.core.ui.components.AvatarImagen

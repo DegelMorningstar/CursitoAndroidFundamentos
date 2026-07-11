@@ -21,3 +21,5 @@ firestore.indexes.json
 firestore.rules
 /.firebaserc
 /push-worker/
+/cursito-release.jks
+keystore.properties

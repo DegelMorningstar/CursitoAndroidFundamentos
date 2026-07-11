@@ -56,6 +56,11 @@ class MainActivity : ComponentActivity() {
         // El arranque siempre pasa por el Splash; este decide a donde ir. `haySesion`
         // (sesion persistida) elige entre Home y Login cuando ya se vio el onboarding.
         val haySesion = FirebaseAuth.getInstance().currentUser != null
+        if(BuildConfig.DEBUG) {
+            Log.d("MainActivity","Ambiente de desarrollo activado")
+        }else{
+            Log.d("MainActivity","Ambiente de QA/Release activado")
+        }
         setContent {
             // Preferencia de tema en memoria (aun no se persiste).
             val isDarkMode = ObtenerTemaUseCase(UserPreferencesImpl(this)).invoke()

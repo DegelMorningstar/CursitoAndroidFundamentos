@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,6 +7,11 @@ plugins {
     kotlin("plugin.serialization") version "2.0.21"
     id("com.google.gms.google-services")
 }
+
+//val keystoreProps = Properties().apply {
+//    val f = rootProject.file("keystore.properties")
+//    if(f.exists()) load(f.inputStream())
+//}
 
 android {
     namespace = "com.yaeldev.cursitodefundamentosandroid"
@@ -15,20 +22,52 @@ android {
         minSdk = 28
         targetSdk = 36
         versionCode = 1
-        versionName = "1.0"
+        versionName = "1.0.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+//    signingConfigs {
+//        create("release") {
+//            storeFile = file(keystoreProps.getProperty("storeFile"))
+//            storePassword = keystoreProps.getProperty("storePassword")
+//            keyAlias = keystoreProps.getProperty("keyAlias")
+//            keyPassword = keystoreProps.getProperty("keyPassword")
+//        }
+//    }
+
     buildTypes {
-        release {
+        //Investigar keystore para variables de entorno y secrets
+        debug {
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-DEBUG"
             isMinifyEnabled = false
+            isDebuggable = true
+            resValue("string","app_name", "Cursito Debug")
+            buildConfigField("String","API_URL","\"AQUI_DEBERIA_IR_TU_BASE_URL_DEV_Y_NO_EN_PATHS\"") //example
+        }
+        create("qa"){
+            initWith(getByName("release"))
+            applicationIdSuffix = ".qa"
+            versionNameSuffix = "-QA"
+            signingConfig = signingConfigs.getByName("debug")
+            isDebuggable = false
+            resValue("string","app_name", "Cursito QA")
+            buildConfigField("String","API_URL","\"AQUI_DEBERIA_IR_TU_BASE_URL_QA_Y_NO_EN_PATHS\"") //example
+        }
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            //signingConfig = signingConfigs.getByName("release")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            resValue("string","app_name", "Cursito")
+            buildConfigField("String","API_URL","\"AQUI_DEBERIA_IR_TU_BASE_URL_Y_NO_EN_PATHS\"") //example
         }
     }
+
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -41,6 +80,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
 
